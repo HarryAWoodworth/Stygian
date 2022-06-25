@@ -5,11 +5,13 @@ var debug := false
 @onready var neck := $Neck
 @onready var camera := $Neck/Camera3D
 @onready var gunraycast := $Neck/Camera3D/GunRayCast
+@onready var standingShape := $StandingCollisionShape
+@onready var crouchingShape := $CrouchingCollisionShape
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const MOUSE_SENSITIVITY := 0.002
-const CROUCH_HEIGHT := 0.33
+const CROUCH_HEIGHT := 0.25
 
 # Get the gravity from the project settings to be synced with RigidDynamicBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -55,9 +57,14 @@ func _physics_process(delta):
 		# Lower the neck to crouch height
 		if isCrouching:
 			neck.transform.origin.y = neckHeight * CROUCH_HEIGHT
+			crouchingShape.disabled = false
+			standingShape.disabled = true
 		# Rause neck back to stand height
 		else:
 			neck.transform.origin.y = neckHeight
+			standingShape.disabled = false
+			crouchingShape.disabled = true
+			
 
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
