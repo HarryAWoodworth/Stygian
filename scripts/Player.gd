@@ -2,13 +2,16 @@ extends CharacterBody3D
 
 @onready var neck := $Neck
 @onready var camera := $Neck/Camera3D
+@onready var gunraycast := $GunRayCast
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
-const MOUSE_SENSITIVITY := 0.01
+const MOUSE_SENSITIVITY := 0.002
 
 # Get the gravity from the project settings to be synced with RigidDynamicBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+# Is the player's weapon in a cooldown state?
+var shootingCooldown := false
 
 func _unhandled_input(event) -> void:
 	# If screen is clicked, hide mouse
@@ -23,7 +26,7 @@ func _unhandled_input(event) -> void:
 			neck.rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
 			camera.rotate_x(-event.relative.y * MOUSE_SENSITIVITY)
 			# Clamp camera
-			camera.rotation.x = clamp(camera.rotation.x, deg2rad(-30), deg2rad(60))
+			camera.rotation.x = clamp(camera.rotation.x, deg2rad(-60), deg2rad(60))
 
 func _physics_process(delta):
 	# Add the gravity.
@@ -45,3 +48,19 @@ func _physics_process(delta):
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	move_and_slide()
+	
+	# Shoot gun
+	if Input.is_action_just_pressed("weapon_shoot") and !shootingCooldown:
+		shootingCooldown = true
+		$AnimationPlayer.play("Pistol_Fire")
+		gunraycast.force_raycast_update()
+		if gunraycast.is_colliding():
+			var bodyHit = gunraycast.get_collider()
+			#if bodyHit.has_method("got_shot"):
+			print("You shot a ", bodyHit.name)
+
+
+func _on_animation_player_animation_finished(anim_name):
+	if anim_name == "Pistol_Fire":
+			print("Done")
+			shootingCooldown = false
