@@ -1,17 +1,30 @@
 extends CharacterBody3D
 
+var debug := false
+
 @onready var neck := $Neck
 @onready var camera := $Neck/Camera3D
-@onready var gunraycast := $GunRayCast
+@onready var gunraycast := $Neck/Camera3D/GunRayCast
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const MOUSE_SENSITIVITY := 0.002
+const CROUCH_HEIGHT := 0.33
 
 # Get the gravity from the project settings to be synced with RigidDynamicBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 # Is the player's weapon in a cooldown state?
 var shootingCooldown := false
+# Is the player crouching?
+var isCrouching := false
+# The height of the neck
+var neckHeight: float
+
+func _ready():
+	neckHeight = neck.transform.origin.y
+	if debug:
+		$Neck/Camera3D.current = false
+		$DebugCamera.current = true
 
 func _unhandled_input(event) -> void:
 	# If screen is clicked, hide mouse
@@ -29,13 +42,22 @@ func _unhandled_input(event) -> void:
 			camera.rotation.x = clamp(camera.rotation.x, deg2rad(-60), deg2rad(60))
 
 func _physics_process(delta):
-	# Add the gravity.
+	# Add gravity
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
-	# Handle Jump.
-	if Input.is_action_just_pressed("ui_accept") and is_on_floor():
+	# Handle Jump
+	if Input.is_action_just_pressed("move_jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+	# Handle Crouch/Stand
+	if Input.is_action_just_pressed("move_crouch"):
+		isCrouching = !isCrouching
+		# Lower the neck to crouch height
+		if isCrouching:
+			neck.transform.origin.y = neckHeight * CROUCH_HEIGHT
+		# Rause neck back to stand height
+		else:
+			neck.transform.origin.y = neckHeight
 
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
