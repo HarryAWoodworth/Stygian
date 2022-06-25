@@ -3,6 +3,7 @@ extends CharacterBody3D
 const SPEED := 1
 
 var target: Node = null
+var health := 5
 
 func setTarget(newTarget: Node) -> void:
 	if newTarget != null:
@@ -22,3 +23,14 @@ func _physics_process(delta):
 	# Move and slide towards target position
 	velocity = directionToTarget * SPEED
 	move_and_slide()
+
+func got_shot() -> void:
+	take_damage(1)
+
+func take_damage(amount: int) -> void:
+	health -= amount
+	if health <= 0:
+		die()
+
+func die() -> void:
+	queue_free()

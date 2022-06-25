@@ -1,11 +1,9 @@
-[gd_scene load_steps=22 format=3 uid="uid://by2aba4ug1oc1"]
+[gd_scene load_steps=14 format=3 uid="uid://by2aba4ug1oc1"]
 
-[ext_resource type="Script" path="res://scripts/Player.gd" id="1_r8lcf"]
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_yb53y"]
 [ext_resource type="Texture2D" uid="uid://cp876w51aq4df" path="res://assets/PlayerPistol.png" id="2_73m64"]
-[ext_resource type="Script" path="res://scripts/DisabledOnReady.gd" id="3_6sm2l"]
-[ext_resource type="Script" path="res://scripts/CornerWatcher.gd" id="3_6tqfm"]
-[ext_resource type="Texture2D" uid="uid://d3gbo08ater0i" path="res://assets/CornerWatcher.png" id="3_tsdrt"]
+[ext_resource type="PackedScene" uid="uid://cw4yhkllc8kyb" path="res://scenes/Player.tscn" id="2_rm88x"]
+[ext_resource type="PackedScene" uid="uid://bxjr1c2a3nsmu" path="res://scenes/CornerWatcher.tscn" id="3_n0274"]
 [ext_resource type="Texture2D" uid="uid://elwgejcncnyr" path="res://assets/GunFire.png" id="4_dynp8"]
 [ext_resource type="Script" path="res://scripts/InvisOnReady.gd" id="5_bvmrs"]
 
@@ -33,156 +31,8 @@ data = PackedVector3Array(10, 0, 10, -10, 0, 10, 10, 0, -10, -10, 0, 10, -10, 0,
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_d4lfy"]
 data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
 
-[sub_resource type="Animation" id="Animation_u4npp"]
-resource_name = "Pistol_Fire"
-length = 0.4
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("../../../CanvasLayer/GunFire:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 1,
-"values": [true, false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("../../../CanvasLayer/Gun:rotation")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.001, 0.1, 0.2, 0.3, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [2.89655, 2.89655, -3.20835, -3.07527, -3.20835, 2.89725]
-}
-
-[sub_resource type="Animation" id="Animation_vanad"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("../../../CanvasLayer/Gun:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [2.89655]
-}
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_f2mwm"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_sx2hc"]
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_7u61c"]
-radius = 0.493611
-height = 1.01843
-
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cjmwk"]
-radius = 0.374066
-height = 2.12058
-
 [node name="Game" type="Node3D"]
 script = ExtResource( "1_yb53y" )
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource( "Environment_baw24" )
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
-visible = false
-shadow_enabled = true
-directional_shadow_max_distance = 250.0
-
-[node name="Floor" type="MeshInstance3D" parent="."]
-mesh = SubResource( "PlaneMesh_l54ap" )
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
-
-[node name="CollisionShape" type="CollisionShape3D" parent="Floor/StaticBody3D"]
-shape = SubResource( "ConcavePolygonShape3D_pxe7d" )
-
-[node name="Test" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 2.85401, 0, 0, 0, 1, -2.50219, 1.31118, 1.63882)
-mesh = SubResource( "BoxMesh_jcuqu" )
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Test"]
-
-[node name="@@39257" type="CollisionShape3D" parent="Test/StaticBody3D"]
-shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
-
-[node name="Test2" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 2.85401, 0, 0, 0, 1, -5.18417, 1.31118, 1.63882)
-mesh = SubResource( "BoxMesh_jcuqu" )
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Test2"]
-
-[node name="39257" type="CollisionShape3D" parent="Test2/StaticBody3D"]
-shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
-
-[node name="Test3" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.0040142, 2.85399, 0, -0.999992, 0.0114566, 0, 0, 0, 1, -3.91405, 1.68771, 1.63882)
-mesh = SubResource( "BoxMesh_jcuqu" )
-
-[node name="StaticBody3D" type="StaticBody3D" parent="Test3"]
-
-[node name="39257" type="CollisionShape3D" parent="Test3/StaticBody3D"]
-shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
-
-[node name="Player" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -6.151)
-script = ExtResource( "1_r8lcf" )
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
-root_node = NodePath("../Neck/Camera3D")
-anims/Pistol_Fire = SubResource( "Animation_u4npp" )
-anims/RESET = SubResource( "Animation_vanad" )
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
-visible = false
-mesh = SubResource( "CapsuleMesh_f2mwm" )
-
-[node name="StandingCollisionShape" type="CollisionShape3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0296754, 0)
-shape = SubResource( "CapsuleShape3D_sx2hc" )
-
-[node name="CrouchingCollisionShape" type="CollisionShape3D" parent="Player"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.459587, 0)
-shape = SubResource( "CapsuleShape3D_7u61c" )
-script = ExtResource( "3_6sm2l" )
-
-[node name="Neck" type="Node3D" parent="Player"]
-transform = Transform3D(-0.999007, 0, 0.0445435, 0, 1, 0, -0.0445435, 0, -0.999007, 0, 0.638595, 0)
-
-[node name="Camera3D" type="Camera3D" parent="Player/Neck"]
-current = true
-
-[node name="GunRayCast" type="RayCast3D" parent="Player/Neck/Camera3D"]
-transform = Transform3D(-0.999008, 0, -0.0445435, 0, 1, 0, 0.0445435, 0, -0.999008, -0.0208412, 0, -0.46742)
-target_position = Vector3(0, 0, 100)
-
-[node name="DebugCamera" type="Camera3D" parent="Player"]
-transform = Transform3D(-0.710494, 0.275688, -0.647453, -0.100792, 0.87071, 0.481357, 0.696448, 0.407259, -0.590847, -2.08113, 1.80824, -1.87534)
-
-[node name="CornerWatcher" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-script = ExtResource( "3_6tqfm" )
-
-[node name="Sprite3D" type="Sprite3D" parent="CornerWatcher"]
-transform = Transform3D(0.099328, 0.0115735, 0, -0.0115735, 0.099328, 0, 0, 0, 1, 0, 0.0686104, 0)
-flip_h = true
-billboard = 2
-texture = ExtResource( "3_tsdrt" )
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CornerWatcher"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0961854, 0)
-shape = SubResource( "CapsuleShape3D_cjmwk" )
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -202,4 +52,75 @@ skew = 0.000537872
 texture = ExtResource( "2_73m64" )
 flip_h = true
 
-[connection signal="animation_finished" from="Player/AnimationPlayer" to="Player" method="_on_animation_player_animation_finished"]
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( "Environment_baw24" )
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75, -0.433013, 0, 0, 0)
+visible = false
+shadow_enabled = true
+directional_shadow_max_distance = 250.0
+
+[node name="Floor" type="MeshInstance3D" parent="."]
+mesh = SubResource( "PlaneMesh_l54ap" )
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
+
+[node name="CollisionShape" type="CollisionShape3D" parent="Floor/StaticBody3D"]
+shape = SubResource( "ConcavePolygonShape3D_pxe7d" )
+
+[node name="TestObstacles" type="Node" parent="."]
+
+[node name="Test" type="MeshInstance3D" parent="TestObstacles"]
+transform = Transform3D(1, 0, 0, 0, 2.85401, 0, 0, 0, 1, -2.50219, 1.31118, 1.63882)
+mesh = SubResource( "BoxMesh_jcuqu" )
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="TestObstacles/Test"]
+
+[node name="@@39257" type="CollisionShape3D" parent="TestObstacles/Test/StaticBody3D"]
+shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
+
+[node name="Test2" type="MeshInstance3D" parent="TestObstacles"]
+transform = Transform3D(1, 0, 0, 0, 2.85401, 0, 0, 0, 1, -5.18417, 1.31118, 1.63882)
+mesh = SubResource( "BoxMesh_jcuqu" )
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="TestObstacles/Test2"]
+
+[node name="39257" type="CollisionShape3D" parent="TestObstacles/Test2/StaticBody3D"]
+shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
+
+[node name="Test3" type="MeshInstance3D" parent="TestObstacles"]
+transform = Transform3D(0.0040142, 2.85399, 0, -0.999992, 0.0114566, 0, 0, 0, 1, -3.91405, 1.68771, 1.63882)
+mesh = SubResource( "BoxMesh_jcuqu" )
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="TestObstacles/Test3"]
+
+[node name="39257" type="CollisionShape3D" parent="TestObstacles/Test3/StaticBody3D"]
+shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
+
+[node name="Test4" type="MeshInstance3D" parent="TestObstacles"]
+transform = Transform3D(0.0040142, 2.85399, 0, -0.999992, 0.0114566, 0, 0, 0, 1, -3.91405, 0.449172, -2.09457)
+mesh = SubResource( "BoxMesh_jcuqu" )
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="TestObstacles/Test4"]
+
+[node name="39257" type="CollisionShape3D" parent="TestObstacles/Test4/StaticBody3D"]
+shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
+
+[node name="Test5" type="MeshInstance3D" parent="TestObstacles"]
+transform = Transform3D(0.0040142, 2.85399, 0, -0.999992, 0.0114566, 0, 0, 0, 1, -3.91405, 0.901203, -4.17931)
+mesh = SubResource( "BoxMesh_jcuqu" )
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="TestObstacles/Test5"]
+
+[node name="39257" type="CollisionShape3D" parent="TestObstacles/Test5/StaticBody3D"]
+shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
+
+[node name="Player" parent="." instance=ExtResource( "2_rm88x" )]
+
+[node name="CornerWatcher" parent="." instance=ExtResource( "3_n0274" )]

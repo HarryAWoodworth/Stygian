@@ -7,6 +7,7 @@ var debug := false
 @onready var gunraycast := $Neck/Camera3D/GunRayCast
 @onready var standingShape := $StandingCollisionShape
 @onready var crouchingShape := $CrouchingCollisionShape
+@onready var crouchJumpingShape := $CrouchJumpCollisionShape
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -54,16 +55,26 @@ func _physics_process(delta):
 	# Handle Crouch/Stand
 	if Input.is_action_just_pressed("move_crouch"):
 		isCrouching = !isCrouching
-		# Lower the neck to crouch height
+		# Disable/enable relevant collision shapes and lower camera
 		if isCrouching:
-			neck.transform.origin.y = neckHeight * CROUCH_HEIGHT
-			crouchingShape.disabled = false
+			# Lower the neck to crouch height if on floor
+			if is_on_floor():
+				neck.transform.origin.y = neckHeight * CROUCH_HEIGHT
+				crouchingShape.disabled = false
+			# Otherwise, crouch jump by only bringing hitbox up
+			else:
+				crouchJumpingShape.disabled = false
+			# Disable standing shape
 			standingShape.disabled = true
-		# Rause neck back to stand height
+		# Raise neck back to stand height
 		else:
+			# If crouch jumped and then landed, raise position before re-enabling standing collision shape
+			if !crouchJumpingShape.disabled and is_on_floor():
+				transform.origin.y += crouchJumpingShape.transform.origin.y
 			neck.transform.origin.y = neckHeight
 			standingShape.disabled = false
 			crouchingShape.disabled = true
+			crouchJumpingShape.disabled = true
 			
 
 	# Get the input direction and handle the movement/deceleration.
@@ -85,8 +96,8 @@ func _physics_process(delta):
 		gunraycast.force_raycast_update()
 		if gunraycast.is_colliding():
 			var bodyHit = gunraycast.get_collider()
-			#if bodyHit.has_method("got_shot"):
-			print("You shot a ", bodyHit.name)
+			if bodyHit.has_method("got_shot"):
+				bodyHit.got_shot()
 
 
 func _on_animation_player_animation_finished(anim_name):
