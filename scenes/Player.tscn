@@ -20,7 +20,7 @@ radius = 0.493611
 height = 1.01843
 
 [node name="Player" type="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -6.151)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 script = ExtResource( "1_uakye" )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -62,7 +62,7 @@ target_position = Vector3(0, 0, 100)
 transform = Transform3D(-0.710494, 0.275688, -0.647453, -0.100792, 0.87071, 0.481357, 0.696448, 0.407259, -0.590847, -2.08113, 1.80824, -1.87534)
 
 [node name="BugTimer" type="Timer" parent="."]
-wait_time = 0.001
+wait_time = 0.05
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="BugTimer" to="." method="_on_bug_timer_timeout"]

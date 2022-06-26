@@ -5,6 +5,7 @@ signal player_seeing_bugs(isSeeingBugs)
 var target: Node = null
 var health := 5
 var inPlayerVision := false
+# Eye height is 0 since we only want to activate if the core of the actor is seen
 var eye_height_increase := Vector3.ZERO
 
 func setInPlayerVision(inPlayerVision_: bool) -> void:

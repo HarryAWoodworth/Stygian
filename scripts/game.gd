@@ -23,6 +23,7 @@ extends Node3D
 @onready var fingerTimer := $FingerTimer
 
 const IN_VISION_THRESHOLD_ANGLE := 60
+const NUMBER_BUGS_PER_TIMER := 5
 
 const insect = preload("res://scenes/Insect.tscn")
 
@@ -53,7 +54,7 @@ func _physics_process(delta):
 			var angleBetween = rad2deg(playerForwardVector.angle_to(vectorToActorFromPlayer))
 			# Set if actor is in player vision
 			var isInPlayerVisionAngle = abs(angleBetween) < IN_VISION_THRESHOLD_ANGLE
-			# If so, check if it is visible via raycast
+			# If so, check if it is visible to the player via raycast
 			if isInPlayerVisionAngle:
 				var space_state = get_world_3d().direct_space_state
 				var isInPlayerVision = _player_shoot_raycast_at(space_state, actor)
@@ -65,21 +66,31 @@ func _physics_process(delta):
 				if actor.inPlayerVision:
 					actor.setInPlayerVision(false)
 
+# Shoot raycast to eyes, torso, and feet
 func _player_shoot_raycast_at(space_state, actor: Node) -> bool:
 	var rayParams := PhysicsRayQueryParameters3D.new()
 	rayParams.from = player.neck.global_transform.origin
-	var actorSightPoint = actor.global_transform.origin + actor.eye_height_increase
-	rayParams.to = actorSightPoint
-	var result = space_state.intersect_ray(rayParams)
+	var result
+	
+	rayParams.to = actor.global_transform.origin + actor.eye_height_increase
+	result = space_state.intersect_ray(rayParams)
+	if result.collider == actor: return true
+	
+	rayParams.to = actor.global_transform.origin
+	result = space_state.intersect_ray(rayParams)
+	if result.collider == actor: return true
+	
+	rayParams.to = actor.global_transform.origin - actor.eye_height_increase
+	result = space_state.intersect_ray(rayParams)
+	# Return since it will be false if actor is unseen
 	return result.collider == actor
-	#player.sightcast.cast_to(actor.global_transform.origin)
-	#return player.sightcast.get_collider == actor
 
-# Make a random bug follow a random path across the hud
+# Make 4 random bugs follow a random path across the hud
 func _on_player_make_bug():
-	var insectInstance = insect.instantiate()
-	var randomPath = _randomPath()
-	randomPath.add_child(insectInstance)
+	for n in NUMBER_BUGS_PER_TIMER:
+		var insectInstance = insect.instantiate()
+		var randomPath = _randomPath()
+		randomPath.add_child(insectInstance)
 
 # Start/Stop the player seeing bugs
 func _player_is_seeing_bugs(isSeeingBugs: bool) -> void:

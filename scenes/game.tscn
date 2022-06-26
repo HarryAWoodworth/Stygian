@@ -309,6 +309,7 @@ skeleton = NodePath("../..")
 shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
 
 [node name="Player" parent="." instance=ExtResource( "2_rm88x" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -5.29696)
 
 [node name="Actors" type="Node" parent="."]
 

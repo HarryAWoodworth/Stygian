@@ -33,10 +33,13 @@ var lookingAtBugs := false
 var inBloodForm := false
 # Can the player form another blood shot?
 var canForm := true
+# Eye height
+var eye_height_increase: Vector3
 
 func _ready():
 	# Save default standing neck height
 	neckHeight = neck.transform.origin.y
+	eye_height_increase = Vector3(0,neckHeight,0)
 	# Set debug camera to active if in debug mode
 	if debug:
 		$Neck/Camera3D.current = false

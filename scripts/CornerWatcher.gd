@@ -23,10 +23,33 @@ func _physics_process(delta):
 	# Normalize the vector because only direction is needed
 	var directionToTarget: Vector3 = (targetPosition - global_transform.origin).normalized() 
 	
-	if !inPlayerVision:
+	var space_state = get_world_3d().direct_space_state
+	if !inPlayerVision and _canSeePlayer(space_state):
 		# Move and slide towards target position
 		velocity = directionToTarget * SPEED
 		move_and_slide()
+
+func _canSeePlayer(space_state) -> bool:
+	var rayParams := PhysicsRayQueryParameters3D.new()
+	var sightPoint = global_transform.origin + eye_height_increase
+	rayParams.from = sightPoint
+	var result
+	
+	# Eyes
+	rayParams.to = target.global_transform.origin + target.eye_height_increase
+	result = space_state.intersect_ray(rayParams)
+	if result.collider == target: return true
+	
+	# Torso
+	rayParams.to = target.global_transform.origin
+	result = space_state.intersect_ray(rayParams)
+	if result.collider == target: return true
+	
+	# Feet
+	rayParams.to = target.global_transform.origin - target.eye_height_increase
+	result = space_state.intersect_ray(rayParams)
+	# Return result at end, will be false if can't see
+	return result.collider == target
 
 func setInPlayerVision(inPlayerVision_: bool) -> void:
 	if inPlayerVision == inPlayerVision_: return
