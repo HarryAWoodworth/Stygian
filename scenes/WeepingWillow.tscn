@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://irs2a45c3e4q"]
+
+[ext_resource type="Script" path="res://scripts/WeepingWillow.gd" id="1_sowkr"]
+[ext_resource type="Texture2D" uid="uid://0s0cbbutvvey" path="res://assets/WeepingWillow.png" id="2_vu5yl"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cjmwk"]
+radius = 0.640095
+height = 2.43041
+
+[node name="WeepingWillow" type="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource( "1_sowkr" )
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.148992, 0.0173603, 0, -0.0173603, 0.148992, 0, 0, 0, 1, 0, 0.0686104, 0)
+billboard = 2
+texture = ExtResource( "2_vu5yl" )
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0961854, 0)
+shape = SubResource( "CapsuleShape3D_cjmwk" )

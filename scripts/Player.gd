@@ -1,6 +1,8 @@
 extends CharacterBody3D
 
-var debug := false
+var debug := true
+
+signal make_bug
 
 @onready var neck := $Neck
 @onready var camera := $Neck/Camera3D
@@ -8,6 +10,7 @@ var debug := false
 @onready var standingShape := $StandingCollisionShape
 @onready var crouchingShape := $CrouchingCollisionShape
 @onready var crouchJumpingShape := $CrouchJumpCollisionShape
+@onready var bugtimer := $BugTimer
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -22,9 +25,13 @@ var shootingCooldown := false
 var isCrouching := false
 # The height of the neck
 var neckHeight: float
+# Is the player looking at weeping willow?
+var lookingAtBugs := false
 
 func _ready():
+	# Save default standing neck height
 	neckHeight = neck.transform.origin.y
+	# Set debug camera to active if in debug mode
 	if debug:
 		$Neck/Camera3D.current = false
 		$DebugCamera.current = true
@@ -99,8 +106,25 @@ func _physics_process(delta):
 			if bodyHit.has_method("got_shot"):
 				bodyHit.got_shot()
 
-
+# Let player shoot once anim is done
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "Pistol_Fire":
-			print("Done")
 			shootingCooldown = false
+
+# Start bug timer
+func start_bugs() -> void:
+	print("Starting bugs")
+	lookingAtBugs = true
+	bugtimer.start()
+
+# Stop bug timer
+func stop_bugs() -> void:
+	print("Stopping bugs")
+	lookingAtBugs = false
+	bugtimer.stop()
+
+# Make a bug fly across the screen
+func _on_bug_timer_timeout():
+	# Make bug
+	emit_signal("make_bug")
+	bugtimer.start()

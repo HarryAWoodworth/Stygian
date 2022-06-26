@@ -1,9 +1,10 @@
 extends CharacterBody3D
 
-const SPEED := 1
+const SPEED := 2
 
 var target: Node = null
 var health := 5
+var inPlayerVision := false
 
 func setTarget(newTarget: Node) -> void:
 	if newTarget != null:
@@ -20,9 +21,15 @@ func _physics_process(delta):
 	var targetPosition: Vector3 = target.global_transform.origin
 	# Normalize the vector because only direction is needed
 	var directionToTarget: Vector3 = (targetPosition - global_transform.origin).normalized() 
-	# Move and slide towards target position
-	velocity = directionToTarget * SPEED
-	move_and_slide()
+	
+	if !inPlayerVision:
+		# Move and slide towards target position
+		velocity = directionToTarget * SPEED
+		move_and_slide()
+
+func setInPlayerVision(inPlayerVision_: bool) -> void:
+	if inPlayerVision == inPlayerVision_: return
+	inPlayerVision = inPlayerVision_
 
 func got_shot() -> void:
 	take_damage(1)

@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7s3lvlk8lxak"]
+
+[ext_resource type="Texture2D" uid="uid://c67hstok02xtl" path="res://assets/InsectSheet.png" id="1_2u76w"]
+[ext_resource type="Script" path="res://scripts/Insect.gd" id="2_t7q23"]
+
+[node name="Insect" type="Sprite2D"]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource( "1_2u76w" )
+hframes = 3
+script = ExtResource( "2_t7q23" )

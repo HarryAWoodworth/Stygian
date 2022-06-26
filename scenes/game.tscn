@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://by2aba4ug1oc1"]
+[gd_scene load_steps=16 format=3 uid="uid://by2aba4ug1oc1"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_yb53y"]
 [ext_resource type="Texture2D" uid="uid://cp876w51aq4df" path="res://assets/PlayerPistol.png" id="2_73m64"]
@@ -6,6 +6,12 @@
 [ext_resource type="PackedScene" uid="uid://bxjr1c2a3nsmu" path="res://scenes/CornerWatcher.tscn" id="3_n0274"]
 [ext_resource type="Texture2D" uid="uid://elwgejcncnyr" path="res://assets/GunFire.png" id="4_dynp8"]
 [ext_resource type="Script" path="res://scripts/InvisOnReady.gd" id="5_bvmrs"]
+[ext_resource type="PackedScene" uid="uid://irs2a45c3e4q" path="res://scenes/WeepingWillow.tscn" id="7_57ndx"]
+
+[sub_resource type="Curve2D" id="Curve2D_42ttw"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 173, 187, -20.2597, -37.5179, 20.2597, 37.5179, 311, 262, -70.5337, 71.2841, 70.5337, -71.2841, 471, 402, -27.0129, -68.2826, 27.0129, 68.2826, 611, 428, -25.5122, 63.0301, 25.5122, -63.0301, 744, 351, -61.4795, -74.6401, 61.4795, 74.6401, 932, 373, -27.9652, -36.435, 27.9652, 36.435, 991, 521, -101.298, -145.57, 101.298, 145.57, 1303, 649)
+}
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_is4jd"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -51,6 +57,17 @@ scale = Vector2(0.204069, -0.20424)
 skew = 0.000537872
 texture = ExtResource( "2_73m64" )
 flip_h = true
+
+[node name="Paths" type="Node" parent="CanvasLayer"]
+
+[node name="Path2D" type="Path2D" parent="CanvasLayer/Paths"]
+position = Vector2(-232, -180)
+curve = SubResource( "Curve2D_42ttw" )
+
+[node name="PathFollow2D" type="PathFollow2D" parent="CanvasLayer/Paths/Path2D"]
+position = Vector2(173, 187)
+rotation = 0.317724
+loop = false
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( "Environment_baw24" )
@@ -123,4 +140,15 @@ shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
 
 [node name="Player" parent="." instance=ExtResource( "2_rm88x" )]
 
-[node name="CornerWatcher" parent="." instance=ExtResource( "3_n0274" )]
+[node name="Actors" type="Node" parent="."]
+
+[node name="WeepingWillows" type="Node" parent="Actors"]
+
+[node name="WeepingWillow" parent="Actors/WeepingWillows" instance=ExtResource( "7_57ndx" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.18917, 1, -2.41769)
+
+[node name="CornerWatchers" type="Node" parent="Actors"]
+
+[node name="CornerWatcher" parent="Actors/CornerWatchers" instance=ExtResource( "3_n0274" )]
+
+[connection signal="make_bug" from="Player" to="." method="_on_player_make_bug"]
