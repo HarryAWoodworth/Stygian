@@ -4,7 +4,7 @@ var debug := false
 
 signal make_bug
 signal form_blood_shot
-signal fire_blood_shot
+signal fire_blood_shot(bloodBallCharged)
 
 @onready var neck := $Neck
 @onready var camera := $Neck/Camera3D
@@ -31,6 +31,8 @@ var neckHeight: float
 var lookingAtBugs := false
 # Is the player in blood form?
 var inBloodForm := false
+# Is the player's blood ball fully charged?
+var bloodBallCharged := false
 # Can the player form another blood shot?
 var canForm := true
 # Eye height
@@ -116,7 +118,8 @@ func _physics_process(delta):
 	else:
 		if inBloodForm:
 			inBloodForm = false
-			emit_signal("fire_blood_shot")
+			emit_signal("fire_blood_shot", bloodBallCharged)
+			bloodBallCharged = false
 	
 	# Shoot gun
 #	if Input.is_action_just_pressed("weapon_shoot") and !shootingCooldown:

@@ -38,18 +38,23 @@ func _canSeePlayer(space_state) -> bool:
 	# Eyes
 	rayParams.to = target.global_transform.origin + target.eye_height_increase
 	result = space_state.intersect_ray(rayParams)
-	if result.collider == target: return true
+	if "collider" in result:
+		if result.collider == target: return true
 	
 	# Torso
 	rayParams.to = target.global_transform.origin
 	result = space_state.intersect_ray(rayParams)
-	if result.collider == target: return true
+	if "collider" in result:
+		if result.collider == target: return true
 	
 	# Feet
 	rayParams.to = target.global_transform.origin - target.eye_height_increase
 	result = space_state.intersect_ray(rayParams)
 	# Return result at end, will be false if can't see
-	return result.collider == target
+	if "collider" in result:
+		return result.collider == target
+	else:
+		return false
 
 func setInPlayerVision(inPlayerVision_: bool) -> void:
 	if inPlayerVision == inPlayerVision_: return

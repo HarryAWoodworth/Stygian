@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://by2aba4ug1oc1"]
+[gd_scene load_steps=21 format=3 uid="uid://by2aba4ug1oc1"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_yb53y"]
 [ext_resource type="Texture2D" uid="uid://cp876w51aq4df" path="res://assets/PlayerPistol.png" id="2_73m64"]
@@ -10,7 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://c8s7q30ivo2wm" path="res://assets/bloodform.png" id="6_frpmi"]
 [ext_resource type="Texture2D" uid="uid://mdkvqoslc53m" path="res://assets/middlefinger.png" id="7_2qflb"]
 [ext_resource type="PackedScene" uid="uid://irs2a45c3e4q" path="res://scenes/WeepingWillow.tscn" id="7_57ndx"]
-[ext_resource type="PackedScene" uid="uid://cb4fxp8vur3lx" path="res://scenes/Bloodball.tscn" id="11_w8anj"]
+[ext_resource type="Texture2D" uid="uid://cj6gb3vpytk71" path="res://assets/spritesheet.png" id="8_6ql7r"]
+[ext_resource type="Script" path="res://scripts/Bloodball2D.gd" id="9_hvqjo"]
 
 [sub_resource type="Curve2D" id="Curve2D_42ttw"]
 _data = {
@@ -102,6 +103,17 @@ scale = Vector2(0.214873, 0.214873)
 texture = ExtResource( "7_2qflb" )
 flip_h = true
 script = ExtResource( "5_bvmrs" )
+
+[node name="Bloodball" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(505, 476)
+scale = Vector2(0.42846, 0.42846)
+texture = ExtResource( "8_6ql7r" )
+hframes = 4
+vframes = 4
+script = ExtResource( "9_hvqjo" )
+
+[node name="Timer" type="Timer" parent="CanvasLayer/Bloodball"]
+wait_time = 0.07
 
 [node name="Paths" type="Node" parent="CanvasLayer"]
 
@@ -325,9 +337,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.18917, 1, -2.41769)
 [node name="FingerTimer" type="Timer" parent="."]
 wait_time = 2.0
 
-[node name="Bloodball" parent="." instance=ExtResource( "11_w8anj" )]
-transform = Transform3D(0.294798, 0, 0, 0, 0.294798, 0, 0, 0, 0.294798, 2.22439, 1.46154, -4.84942)
-
+[connection signal="bloodball_charged" from="CanvasLayer/Bloodball" to="." method="_on_bloodball_bloodball_charged"]
+[connection signal="timeout" from="CanvasLayer/Bloodball/Timer" to="CanvasLayer/Bloodball" method="_on_timer_timeout"]
 [connection signal="fire_blood_shot" from="Player" to="." method="_on_player_fire_blood_shot"]
 [connection signal="form_blood_shot" from="Player" to="." method="_on_player_form_blood_shot"]
 [connection signal="make_bug" from="Player" to="." method="_on_player_make_bug"]

@@ -21,6 +21,7 @@ extends Node3D
 @onready var middleFingerLeft := $CanvasLayer/MiddleFingerLeft
 @onready var middleFingerRight := $CanvasLayer/MiddleFingerRight
 @onready var fingerTimer := $FingerTimer
+@onready var bloodball := $CanvasLayer/Bloodball
 
 const IN_VISION_THRESHOLD_ANGLE := 60
 const NUMBER_BUGS_PER_TIMER := 5
@@ -32,7 +33,6 @@ func _debug() -> void:
 
 func _ready():
 	randomize()
-	$Bloodball.init(player)
 	for cornerWatcher in cornerWatchers.get_children():
 		cornerWatcher.setTarget(player)
 	for weepingWillow in weepingWillows.get_children():
@@ -74,16 +74,21 @@ func _player_shoot_raycast_at(space_state, actor: Node) -> bool:
 	
 	rayParams.to = actor.global_transform.origin + actor.eye_height_increase
 	result = space_state.intersect_ray(rayParams)
-	if result.collider == actor: return true
+	if "collider" in result:
+		if result.collider == actor: return true
 	
 	rayParams.to = actor.global_transform.origin
 	result = space_state.intersect_ray(rayParams)
-	if result.collider == actor: return true
+	if "collider" in result:
+		if result.collider == actor: return true
 	
 	rayParams.to = actor.global_transform.origin - actor.eye_height_increase
 	result = space_state.intersect_ray(rayParams)
 	# Return since it will be false if actor is unseen
-	return result.collider == actor
+	if "collider" in result:
+		return result.collider == actor
+	else:
+		return false
 
 # Make 4 random bugs follow a random path across the hud
 func _on_player_make_bug():
@@ -109,19 +114,30 @@ func _on_player_form_blood_shot():
 	rightHandIdle.visible = false
 	leftHandForm.visible = true
 	rightHandForm.visible = true
+	bloodball.show()
 
-func _on_player_fire_blood_shot():
+func _on_player_fire_blood_shot(bloodBallCharged: bool):
 	player.canForm = false
+	bloodball.hide()
 	leftHandForm.visible = false
 	rightHandForm.visible = false
-	middleFingerLeft.visible = true
-	middleFingerRight.visible = true
-	fingerTimer.start()
+	if bloodBallCharged:
+		middleFingerLeft.visible = true
+		middleFingerRight.visible = true
+		fingerTimer.start()
+		print("Yippee!")
+	else:
+		_on_finger_timer_timeout()
+		print("Awww")
 
 func _on_finger_timer_timeout():
 	fingerTimer.stop()
+	bloodball.endTween()
 	middleFingerLeft.visible = false
 	middleFingerRight.visible = false
 	leftHandIdle.visible = true
 	rightHandIdle.visible = true
 	player.canForm = true
+
+func _on_bloodball_bloodball_charged():
+	player.bloodBallCharged = true
