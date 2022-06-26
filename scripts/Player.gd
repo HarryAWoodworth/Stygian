@@ -1,8 +1,10 @@
 extends CharacterBody3D
 
-var debug := true
+var debug := false
 
 signal make_bug
+signal form_blood_shot
+signal fire_blood_shot
 
 @onready var neck := $Neck
 @onready var camera := $Neck/Camera3D
@@ -27,6 +29,10 @@ var isCrouching := false
 var neckHeight: float
 # Is the player looking at weeping willow?
 var lookingAtBugs := false
+# Is the player in blood form?
+var inBloodForm := false
+# Can the player form another blood shot?
+var canForm := true
 
 func _ready():
 	# Save default standing neck height
@@ -96,15 +102,28 @@ func _physics_process(delta):
 
 	move_and_slide()
 	
+	
+	# Held down blood shot
+	if Input.is_action_pressed("weapon_shoot"):
+		if !inBloodForm and canForm:
+			inBloodForm = true
+			print("Emit form")
+			emit_signal("form_blood_shot")
+	# If released, fire blood shot
+	else:
+		if inBloodForm:
+			inBloodForm = false
+			emit_signal("fire_blood_shot")
+	
 	# Shoot gun
-	if Input.is_action_just_pressed("weapon_shoot") and !shootingCooldown:
-		shootingCooldown = true
-		$AnimationPlayer.play("Pistol_Fire")
-		gunraycast.force_raycast_update()
-		if gunraycast.is_colliding():
-			var bodyHit = gunraycast.get_collider()
-			if bodyHit.has_method("got_shot"):
-				bodyHit.got_shot()
+#	if Input.is_action_just_pressed("weapon_shoot") and !shootingCooldown:
+#		shootingCooldown = true
+#		$AnimationPlayer.play("Pistol_Fire")
+#		gunraycast.force_raycast_update()
+#		if gunraycast.is_colliding():
+#			var bodyHit = gunraycast.get_collider()
+#			if bodyHit.has_method("got_shot"):
+#				bodyHit.got_shot()
 
 # Let player shoot once anim is done
 func _on_animation_player_animation_finished(anim_name):
@@ -113,13 +132,11 @@ func _on_animation_player_animation_finished(anim_name):
 
 # Start bug timer
 func start_bugs() -> void:
-	print("Starting bugs")
 	lookingAtBugs = true
 	bugtimer.start()
 
 # Stop bug timer
 func stop_bugs() -> void:
-	print("Stopping bugs")
 	lookingAtBugs = false
 	bugtimer.stop()
 

@@ -5,6 +5,7 @@ const SPEED := 2
 var target: Node = null
 var health := 5
 var inPlayerVision := false
+var eye_height_increase := Vector3(0,0.5,0)
 
 func setTarget(newTarget: Node) -> void:
 	if newTarget != null:
