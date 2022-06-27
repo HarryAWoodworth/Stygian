@@ -1,4 +1,4 @@
-[gd_scene load_steps=4 format=3 uid="uid://bxjr1c2a3nsmu"]
+[gd_scene load_steps=5 format=3 uid="uid://bxjr1c2a3nsmu"]
 
 [ext_resource type="Script" path="res://scripts/CornerWatcher.gd" id="1_2v8ss"]
 [ext_resource type="Texture2D" uid="uid://d3gbo08ater0i" path="res://assets/CornerWatcher.png" id="2_f4him"]
@@ -6,6 +6,9 @@
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cjmwk"]
 radius = 0.374066
 height = 2.12058
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5efe6"]
+height = 2.29387
 
 [node name="CornerWatcher" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -20,3 +23,15 @@ texture = ExtResource( "2_f4him" )
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0961854, 0)
 shape = SubResource( "CapsuleShape3D_cjmwk" )
+
+[node name="DamageArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="DamageArea"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0961854, 0)
+shape = SubResource( "CapsuleShape3D_5efe6" )
+
+[node name="DamageTimer" type="Timer" parent="."]
+
+[connection signal="body_entered" from="DamageArea" to="." method="_on_damage_area_body_entered"]
+[connection signal="body_exited" from="DamageArea" to="." method="_on_damage_area_body_exited"]
+[connection signal="timeout" from="DamageTimer" to="." method="_on_damage_timer_timeout"]

@@ -44,11 +44,13 @@ script = ExtResource( "2_5utnx" )
 
 [node name="CrouchJumpCollisionShape" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.53991, 0)
+visible = false
 shape = SubResource( "CapsuleShape3D_7u61c" )
 script = ExtResource( "2_5utnx" )
 
 [node name="Neck" type="Node3D" parent="."]
 transform = Transform3D(-0.999007, 0, 0.0445435, 0, 1, 0, -0.0445435, 0, -0.999007, 0, 0.638595, 0)
+visible = false
 
 [node name="Camera3D" type="Camera3D" parent="Neck"]
 transform = Transform3D(1, 0, -2.23517e-08, 0, 1, 0, 1.86265e-08, 0, 1, -0.06312, -2.38419e-07, 0.015203)
@@ -58,11 +60,30 @@ current = true
 transform = Transform3D(-0.999008, 0, -0.0445435, 0, 1, 0, 0.0445435, 0, -0.999008, -0.0208412, 0, -0.46742)
 target_position = Vector3(0, 0, 100)
 
+[node name="Position3D" type="Position3D" parent="Neck"]
+transform = Transform3D(1, 0, -1.86265e-08, 0, 1, 0, 1.86265e-08, 0, 1, -0.0331865, -0.41989, -0.744296)
+
 [node name="DebugCamera" type="Camera3D" parent="."]
 transform = Transform3D(-0.710494, 0.275688, -0.647453, -0.100792, 0.87071, 0.481357, 0.696448, 0.407259, -0.590847, -2.08113, 1.80824, -1.87534)
+visible = false
+projection = 1
 
 [node name="BugTimer" type="Timer" parent="."]
 wait_time = 0.05
+
+[node name="UncrouchRaycasts" type="Node" parent="."]
+
+[node name="RayCast3D" type="RayCast3D" parent="UncrouchRaycasts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.513291, 2.07948, 0.0196061)
+
+[node name="RayCast3D2" type="RayCast3D" parent="UncrouchRaycasts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.508137, 2.07948, 0.000275642)
+
+[node name="RayCast3D3" type="RayCast3D" parent="UncrouchRaycasts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00133669, 2.07948, -0.51475)
+
+[node name="RayCast3D4" type="RayCast3D" parent="UncrouchRaycasts"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0100092, 2.07948, 0.512217)
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="BugTimer" to="." method="_on_bug_timer_timeout"]

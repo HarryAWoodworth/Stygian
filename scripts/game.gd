@@ -1,13 +1,51 @@
 extends Node3D
 
-# Player Health
-# Healthbar Veins
-# Damage from Corner Watcher touch
-# Damage from Weeping Willow bugs
+# [ ] Fix Crouch (Double raycast)
+# [ ] Damage from Weeping Willow bugs
+# [ ] Damage Effect
+# [ ] Slurp some rats to regain blood
+# [ ] Blood Boost
+# [ ] Better feeling physics
+# [ ] Wheelchair Twitcher
+# [ ] Simple Stealth system (Directional areas for wheelchair, one smaller for crouching one larger for standing.
+# [ ] Flashlight
+# [ ] Lighting
+# [ ] Rain
+# [ ] Rain Effect On Blood
+#	[ ] Cant form
+#	[ ] Blood balls dissapear (Raycast straight up?)
 
-# BLOOD WEAPONS
-# Blood Shot
-# Blood Boost
+# [ ] SOUND
+#	[ ] Ambience
+#	[ ] Music
+#	[ ] Rat Slurp
+#	[ ] Damage Taken
+#	[ ] Damage Given
+#	[ ] Blood ball 
+#	[ ] Blood Form
+#	[ ] Blood ball flying
+#	[ ] Heartbeat when low health
+#	[ ] Corner Watcher
+#		[ ] Ambient
+#		[ ] Approaching Noise
+#		[ ] Hit Noise
+#		[ ] Attack Noise
+#		[ ] Death Noise
+#	[ ] Weeping Willow
+#		[ ] Ambient
+#		[ ] Bug Noise
+#		[ ] Hit Noise
+#		[ ] Death Noise
+#	[ ] Wheelchair Twitcher
+#		[ ] Ambient
+#		[ ] Wheel Noise
+#		[ ] Angry Noises
+#		[ ] Attack Noises
+#		[ ] Hit Noise
+#		[ ] Death Noise
+
+# Things you turn on with blood?
+# Ex. A generator for lights/doors that runs on blood
 
 @onready var actors := $Actors
 @onready var cornerWatchers := $Actors/CornerWatchers
@@ -21,12 +59,15 @@ extends Node3D
 @onready var middleFingerLeft := $CanvasLayer/MiddleFingerLeft
 @onready var middleFingerRight := $CanvasLayer/MiddleFingerRight
 @onready var fingerTimer := $FingerTimer
-@onready var bloodball := $CanvasLayer/Bloodball
+@onready var bloodball2d := $CanvasLayer/Bloodball
+@onready var projectiles := $Projectiles
+@onready var veins := $CanvasLayer/Veins
 
-const IN_VISION_THRESHOLD_ANGLE := 60
+const IN_VISION_THRESHOLD_ANGLE := 55
 const NUMBER_BUGS_PER_TIMER := 5
 
 const insect = preload("res://scenes/Insect.tscn")
+const bloodball = preload("res://scenes/Bloodball.tscn")
 
 func _debug() -> void:
 	_on_player_make_bug()
@@ -112,32 +153,55 @@ func _randomPath() -> Path2D:
 func _on_player_form_blood_shot():
 	leftHandIdle.visible = false
 	rightHandIdle.visible = false
+	for vein in veins.get_children():
+		vein.visible = false
 	leftHandForm.visible = true
 	rightHandForm.visible = true
-	bloodball.show()
+	bloodball2d.show()
 
 func _on_player_fire_blood_shot(bloodBallCharged: bool):
 	player.canForm = false
-	bloodball.hide()
+	bloodball2d.hide()
 	leftHandForm.visible = false
 	rightHandForm.visible = false
 	if bloodBallCharged:
 		middleFingerLeft.visible = true
 		middleFingerRight.visible = true
 		fingerTimer.start()
-		print("Yippee!")
+		player.bloodloss(player.BLOODBALL_COST)
+		_createBloodball()
 	else:
 		_on_finger_timer_timeout()
-		print("Awww")
+
+func _createBloodball() -> void:
+	var bloodballInstance = bloodball.instantiate()
+	projectiles.add_child(bloodballInstance)
+	bloodballInstance.init(player.shootPoint.global_transform, -1 * player.camera.get_global_transform().basis.z.normalized())
 
 func _on_finger_timer_timeout():
 	fingerTimer.stop()
-	bloodball.endTween()
+	bloodball2d.endTween()
 	middleFingerLeft.visible = false
 	middleFingerRight.visible = false
 	leftHandIdle.visible = true
 	rightHandIdle.visible = true
+	for vein in veins.get_children():
+		vein.visible = true
 	player.canForm = true
 
 func _on_bloodball_bloodball_charged():
 	player.bloodBallCharged = true
+
+func _on_player_player_died():
+	print("YOU DIED")
+
+# Hide / Show veins
+func _on_player_player_updated_blood(bloodAmount):
+	pass
+	var i = 0
+	while i < veins.get_children().size():
+		if i <= bloodAmount-1:
+			veins.get_child(i).fill()
+		else:
+			veins.get_child(i).empty()
+		i += 1

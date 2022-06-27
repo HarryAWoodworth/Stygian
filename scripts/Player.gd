@@ -5,6 +5,8 @@ var debug := false
 signal make_bug
 signal form_blood_shot
 signal fire_blood_shot(bloodBallCharged)
+signal player_died
+signal player_updated_blood(bloodAmount)
 
 @onready var neck := $Neck
 @onready var camera := $Neck/Camera3D
@@ -13,11 +15,14 @@ signal fire_blood_shot(bloodBallCharged)
 @onready var crouchingShape := $CrouchingCollisionShape
 @onready var crouchJumpingShape := $CrouchJumpCollisionShape
 @onready var bugtimer := $BugTimer
+@onready var shootPoint := $Neck/Position3D
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const MOUSE_SENSITIVITY := 0.002
 const CROUCH_HEIGHT := 0.25
+const STARTING_BLOOD := 10
+const BLOODBALL_COST := 1
 
 # Get the gravity from the project settings to be synced with RigidDynamicBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -37,14 +42,17 @@ var bloodBallCharged := false
 var canForm := true
 # Eye height
 var eye_height_increase: Vector3
+# How much blood the player has
+var blood: int
 
 func _ready():
+	blood = STARTING_BLOOD
 	# Save default standing neck height
 	neckHeight = neck.transform.origin.y
 	eye_height_increase = Vector3(0,neckHeight,0)
 	# Set debug camera to active if in debug mode
 	if debug:
-		$Neck/Camera3D.current = false
+		camera.current = false
 		$DebugCamera.current = true
 
 func _unhandled_input(event) -> void:
@@ -112,7 +120,6 @@ func _physics_process(delta):
 	if Input.is_action_pressed("weapon_shoot"):
 		if !inBloodForm and canForm:
 			inBloodForm = true
-			print("Emit form")
 			emit_signal("form_blood_shot")
 	# If released, fire blood shot
 	else:
@@ -120,16 +127,6 @@ func _physics_process(delta):
 			inBloodForm = false
 			emit_signal("fire_blood_shot", bloodBallCharged)
 			bloodBallCharged = false
-	
-	# Shoot gun
-#	if Input.is_action_just_pressed("weapon_shoot") and !shootingCooldown:
-#		shootingCooldown = true
-#		$AnimationPlayer.play("Pistol_Fire")
-#		gunraycast.force_raycast_update()
-#		if gunraycast.is_colliding():
-#			var bodyHit = gunraycast.get_collider()
-#			if bodyHit.has_method("got_shot"):
-#				bodyHit.got_shot()
 
 # Let player shoot once anim is done
 func _on_animation_player_animation_finished(anim_name):
@@ -151,3 +148,14 @@ func _on_bug_timer_timeout():
 	# Make bug
 	emit_signal("make_bug")
 	bugtimer.start()
+
+# Take damage to player's blood
+func bloodloss(amount: int) -> void:
+	blood -= amount
+	if blood <= 0:
+		_die()
+	else:
+		emit_signal("player_updated_blood", blood)
+
+func _die() -> void:
+	emit_signal("player_died")

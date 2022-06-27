@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://by2aba4ug1oc1"]
+[gd_scene load_steps=22 format=3 uid="uid://by2aba4ug1oc1"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_yb53y"]
 [ext_resource type="Texture2D" uid="uid://cp876w51aq4df" path="res://assets/PlayerPistol.png" id="2_73m64"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://irs2a45c3e4q" path="res://scenes/WeepingWillow.tscn" id="7_57ndx"]
 [ext_resource type="Texture2D" uid="uid://cj6gb3vpytk71" path="res://assets/spritesheet.png" id="8_6ql7r"]
 [ext_resource type="Script" path="res://scripts/Bloodball2D.gd" id="9_hvqjo"]
+[ext_resource type="PackedScene" uid="uid://cixrtumnkvdh6" path="res://scenes/Vein.tscn" id="10_ln7an"]
 
 [sub_resource type="Curve2D" id="Curve2D_42ttw"]
 _data = {
@@ -77,12 +78,14 @@ texture = ExtResource( "5_qmwjr" )
 flip_h = true
 
 [node name="BloodformLeft" type="Sprite2D" parent="CanvasLayer"]
+visible = false
 position = Vector2(162, 481)
 scale = Vector2(0.209717, 0.209717)
 texture = ExtResource( "6_frpmi" )
 script = ExtResource( "5_bvmrs" )
 
 [node name="BloodformRight" type="Sprite2D" parent="CanvasLayer"]
+visible = false
 position = Vector2(869, 481)
 scale = Vector2(0.209717, 0.209717)
 texture = ExtResource( "6_frpmi" )
@@ -90,6 +93,7 @@ flip_h = true
 script = ExtResource( "5_bvmrs" )
 
 [node name="MiddleFingerLeft" type="Sprite2D" parent="CanvasLayer"]
+visible = false
 position = Vector2(194, 429)
 rotation = 0.0999591
 scale = Vector2(0.214873, 0.214873)
@@ -97,6 +101,7 @@ texture = ExtResource( "7_2qflb" )
 script = ExtResource( "5_bvmrs" )
 
 [node name="MiddleFingerRight" type="Sprite2D" parent="CanvasLayer"]
+visible = false
 position = Vector2(833, 432)
 rotation = -0.0761359
 scale = Vector2(0.214873, 0.214873)
@@ -105,6 +110,7 @@ flip_h = true
 script = ExtResource( "5_bvmrs" )
 
 [node name="Bloodball" type="Sprite2D" parent="CanvasLayer"]
+visible = false
 position = Vector2(505, 476)
 scale = Vector2(0.42846, 0.42846)
 texture = ExtResource( "8_6ql7r" )
@@ -251,6 +257,48 @@ position = Vector2(-294, 85)
 rotation = -0.253644
 curve = SubResource( "Curve2D_42ttw" )
 
+[node name="Veins" type="Node" parent="CanvasLayer"]
+
+[node name="Vein2" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+position = Vector2(98, 546)
+rotation = 0.82973
+
+[node name="Vein3" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+position = Vector2(21, 545)
+rotation = 0.82973
+
+[node name="Vein4" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+position = Vector2(912, 538)
+rotation = 2.23631
+
+[node name="Vein5" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+position = Vector2(987, 522)
+rotation = 2.23631
+
+[node name="Vein6" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+position = Vector2(937, 509)
+rotation = 2.23631
+
+[node name="Vein7" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+position = Vector2(141, 490)
+rotation = 0.973213
+
+[node name="Vein8" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+position = Vector2(38, 573)
+rotation = 0.759868
+
+[node name="Vein9" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+position = Vector2(876, 550)
+rotation = -0.731555
+
+[node name="Vein10" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+position = Vector2(989, 572)
+rotation = -0.731555
+
+[node name="Vein11" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+position = Vector2(137, 541)
+rotation = 0.486407
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( "Environment_baw24" )
 
@@ -259,6 +307,9 @@ transform = Transform3D(-0.866025, -0.433013, 0.25, 0, 0.5, 0.866025, -0.5, 0.75
 visible = false
 shadow_enabled = true
 directional_shadow_max_distance = 250.0
+
+[node name="Player" parent="." instance=ExtResource( "2_rm88x" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -5.29696)
 
 [node name="Floor" type="MeshInstance3D" parent="."]
 mesh = SubResource( "PlaneMesh_l54ap" )
@@ -320,9 +371,6 @@ skeleton = NodePath("../..")
 [node name="39257" type="CollisionShape3D" parent="TestObstacles/Test5/StaticBody3D"]
 shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
 
-[node name="Player" parent="." instance=ExtResource( "2_rm88x" )]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -5.29696)
-
 [node name="Actors" type="Node" parent="."]
 
 [node name="WeepingWillows" type="Node" parent="Actors"]
@@ -334,6 +382,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.18917, 1, -2.41769)
 
 [node name="CornerWatcher" parent="Actors/CornerWatchers" instance=ExtResource( "3_n0274" )]
 
+[node name="Projectiles" type="Node" parent="."]
+
 [node name="FingerTimer" type="Timer" parent="."]
 wait_time = 2.0
 
@@ -342,4 +392,6 @@ wait_time = 2.0
 [connection signal="fire_blood_shot" from="Player" to="." method="_on_player_fire_blood_shot"]
 [connection signal="form_blood_shot" from="Player" to="." method="_on_player_form_blood_shot"]
 [connection signal="make_bug" from="Player" to="." method="_on_player_make_bug"]
+[connection signal="player_died" from="Player" to="." method="_on_player_player_died"]
+[connection signal="player_updated_blood" from="Player" to="." method="_on_player_player_updated_blood"]
 [connection signal="timeout" from="FingerTimer" to="." method="_on_finger_timer_timeout"]

@@ -1,8 +1,12 @@
 extends CharacterBody3D
 
+@onready var timer := $DamageTimer
+
 const SPEED := 2
+const DAMAGE := 1
 
 var target: Node = null
+var killingTarget: Node = null
 var health := 5
 var inPlayerVision := false
 var eye_height_increase := Vector3(0,0.5,0)
@@ -70,3 +74,18 @@ func take_damage(amount: int) -> void:
 
 func die() -> void:
 	queue_free()
+
+func _on_damage_area_body_entered(body):
+	if body.name == "Player":
+		killingTarget = body
+		body.bloodloss(DAMAGE)
+		timer.start()
+
+func _on_damage_area_body_exited(body):
+	killingTarget = null
+	timer.stop()
+
+func _on_damage_timer_timeout():
+	if killingTarget != null:
+		killingTarget.bloodloss(DAMAGE)
+	timer.start()

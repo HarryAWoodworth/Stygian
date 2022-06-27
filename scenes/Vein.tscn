@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://cixrtumnkvdh6"]
+
+[ext_resource type="Texture2D" uid="uid://dlaksgf8r8eb3" path="res://assets/Vein.png" id="1_m0ixg"]
+[ext_resource type="Script" path="res://scripts/Vein.gd" id="2_3dloj"]
+
+[node name="Vein" type="Sprite2D"]
+scale = Vector2(0.03, 0.03)
+texture = ExtResource( "1_m0ixg" )
+script = ExtResource( "2_3dloj" )
+
+[node name="Timer" type="Timer" parent="."]
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
