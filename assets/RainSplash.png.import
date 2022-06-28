@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://q1kem30ecmg8"
-path.s3tc="res://.godot/imported/hand.png-5390196fb1554350de487a1bb25078ac.s3tc.ctex"
-path.etc2="res://.godot/imported/hand.png-5390196fb1554350de487a1bb25078ac.etc2.ctex"
+uid="uid://baklirxnv73pb"
+path.s3tc="res://.godot/imported/RainSplash.png-4b317485f7dd4338957acb511d119c28.s3tc.ctex"
+path.etc2="res://.godot/imported/RainSplash.png-4b317485f7dd4338957acb511d119c28.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc", "etc2"],
 "vram_texture": true
@@ -12,8 +12,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/hand.png"
-dest_files=["res://.godot/imported/hand.png-5390196fb1554350de487a1bb25078ac.s3tc.ctex", "res://.godot/imported/hand.png-5390196fb1554350de487a1bb25078ac.etc2.ctex"]
+source_file="res://assets/RainSplash.png"
+dest_files=["res://.godot/imported/RainSplash.png-4b317485f7dd4338957acb511d119c28.s3tc.ctex", "res://.godot/imported/RainSplash.png-4b317485f7dd4338957acb511d119c28.etc2.ctex"]
 
 [params]
 

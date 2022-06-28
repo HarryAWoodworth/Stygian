@@ -1,19 +1,18 @@
-[gd_scene load_steps=23 format=3 uid="uid://by2aba4ug1oc1"]
+[gd_scene load_steps=22 format=3 uid="uid://by2aba4ug1oc1"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_yb53y"]
 [ext_resource type="Texture2D" uid="uid://cp876w51aq4df" path="res://assets/PlayerPistol.png" id="2_73m64"]
 [ext_resource type="PackedScene" uid="uid://cw4yhkllc8kyb" path="res://scenes/Player.tscn" id="2_rm88x"]
-[ext_resource type="PackedScene" uid="uid://bxjr1c2a3nsmu" path="res://scenes/CornerWatcher.tscn" id="3_n0274"]
 [ext_resource type="Texture2D" uid="uid://elwgejcncnyr" path="res://assets/GunFire.png" id="4_dynp8"]
 [ext_resource type="Script" path="res://scripts/InvisOnReady.gd" id="5_bvmrs"]
 [ext_resource type="Texture2D" uid="uid://q1kem30ecmg8" path="res://assets/hand.png" id="5_qmwjr"]
 [ext_resource type="Texture2D" uid="uid://c8s7q30ivo2wm" path="res://assets/bloodform.png" id="6_frpmi"]
 [ext_resource type="Texture2D" uid="uid://mdkvqoslc53m" path="res://assets/middlefinger.png" id="7_2qflb"]
-[ext_resource type="PackedScene" uid="uid://irs2a45c3e4q" path="res://scenes/WeepingWillow.tscn" id="7_57ndx"]
 [ext_resource type="Texture2D" uid="uid://cwl263iwk1s6d" path="res://assets/vignette.png" id="8_6i6jl"]
 [ext_resource type="Texture2D" uid="uid://cj6gb3vpytk71" path="res://assets/spritesheet.png" id="8_6ql7r"]
 [ext_resource type="Script" path="res://scripts/Bloodball2D.gd" id="9_hvqjo"]
 [ext_resource type="PackedScene" uid="uid://cixrtumnkvdh6" path="res://scenes/Vein.tscn" id="10_ln7an"]
+[ext_resource type="PackedScene" uid="uid://b4khlfg0aurua" path="res://scenes/RainMaker.tscn" id="15_kl5sr"]
 
 [sub_resource type="Curve2D" id="Curve2D_42ttw"]
 _data = {
@@ -381,13 +380,7 @@ shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
 
 [node name="WeepingWillows" type="Node" parent="Actors"]
 
-[node name="WeepingWillow" parent="Actors/WeepingWillows" instance=ExtResource( "7_57ndx" )]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.9592, 1, 0)
-
 [node name="CornerWatchers" type="Node" parent="Actors"]
-
-[node name="CornerWatcher" parent="Actors/CornerWatchers" instance=ExtResource( "3_n0274" )]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 6.26149)
 
 [node name="Projectiles" type="Node" parent="."]
 
@@ -395,6 +388,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 6.26149)
 wait_time = 2.0
 
 [node name="VignetteTimer" type="Timer" parent="."]
+
+[node name="RainMaker" parent="." instance=ExtResource( "15_kl5sr" )]
+transform = Transform3D(1.02941, 0, 0, 0, 0, 3.87132, 0, -1.02941, 0, 0, 23.5044, 0)
+visibility_aabb = AABB(-10.4345, -10.2893, -6.10481, 20.869, 20.5787, 12.2096)
+splash_area = 25.0
 
 [connection signal="bloodball_charged" from="CanvasLayer/Bloodball" to="." method="_on_bloodball_bloodball_charged"]
 [connection signal="timeout" from="CanvasLayer/Bloodball/Timer" to="CanvasLayer/Bloodball" method="_on_timer_timeout"]

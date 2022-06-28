@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-var debug := false
+var debug := true
 
 signal make_bug
 signal form_blood_shot
@@ -17,12 +17,20 @@ signal player_took_damage
 @onready var crouchJumpingShape := $CrouchJumpCollisionShape
 @onready var bugtimer := $BugTimer
 @onready var shootPoint := $Neck/Position3D
+@onready var bugDamageTimer := $BugDamageTimer
+@onready var rainCast := $RainCast
+@onready var standCast1 := $RayCast3D
+@onready var standCast2 := $RayCast3D2
+@onready var standCast3 := $RayCast3D3
+@onready var standCast4 := $RayCast3D4
+
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const CROUCH_HEIGHT := 0.25
 const STARTING_BLOOD := 10
 const BLOODBALL_COST := 1
+const DAMAGE_FROM_BUGS := 1
 
 # Settings
 var CROUCH_TOGGLE := false
@@ -34,6 +42,8 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var shootingCooldown := false
 # Is the player crouching?
 var isCrouching := false
+# Array of raycasts for stand check
+var standCasts: Array
 # The height of the neck
 var neckHeight: float
 # Is the player looking at weeping willow?
@@ -48,8 +58,13 @@ var canForm := true
 var eye_height_increase: Vector3
 # How much blood the player has
 var blood: int
+# Is the player in the rain?
+var inRain := false
 
 func _ready():
+	# Save stand casts
+	standCasts = [standCast1,standCast2,standCast3,standCast4]
+	# Starting blood
 	blood = STARTING_BLOOD
 	# Save default standing neck height
 	neckHeight = neck.transform.origin.y
@@ -79,7 +94,10 @@ func _physics_process(delta):
 	# Add gravity
 	if not is_on_floor():
 		velocity.y -= gravity * delta
-
+	
+	# Check for rain
+	inRain = !rainCast.is_colliding()
+	
 	# Handle Jump
 	if Input.is_action_just_pressed("move_jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
@@ -88,19 +106,18 @@ func _physics_process(delta):
 	if CROUCH_TOGGLE:
 		# Switch stand/crouch based on current state
 		if Input.is_action_just_pressed("move_crouch"):
-			isCrouching = !isCrouching
-			if isCrouching: _crouch()
+			if !isCrouching: _crouch()
 			else: _stand()
 	# Handle Crouch Hold
 	else:
 		# If crouch held, crouch if not already
 		if Input.is_action_pressed("move_crouch"):
 			if !isCrouching:
-				isCrouching = true
 				_crouch()
 		# Stand if not pressed
 		else:
-			_stand()
+			if isCrouching:
+				_stand()
 			
 
 	# Get the input direction and handle the movement/deceleration.
@@ -118,12 +135,12 @@ func _physics_process(delta):
 	
 	# Held down blood shot
 	if Input.is_action_pressed("weapon_shoot"):
-		if !inBloodForm and canForm:
+		if !inRain and !inBloodForm and canForm:
 			inBloodForm = true
 			emit_signal("form_blood_shot")
 	# If released, fire blood shot
 	else:
-		if inBloodForm:
+		if !inRain and inBloodForm:
 			inBloodForm = false
 			emit_signal("fire_blood_shot", bloodBallCharged)
 			bloodBallCharged = false
@@ -138,9 +155,11 @@ func _crouch() -> void:
 		crouchJumpingShape.disabled = false
 	# Disable standing shape
 	standingShape.disabled = true
+	isCrouching = true
 
 # Stand up, accounting for crouch-jump state
 func _stand() -> void:
+	if _cantStand(): return
 	# If crouch jumped and then landed, raise position before re-enabling standing collision shape
 	if !crouchJumpingShape.disabled and is_on_floor():
 		transform.origin.y += crouchJumpingShape.transform.origin.y
@@ -149,6 +168,11 @@ func _stand() -> void:
 	crouchingShape.disabled = true
 	crouchJumpingShape.disabled = true
 	isCrouching = false
+
+func _cantStand():
+	for ray in standCasts:
+		if ray.is_colliding(): return true
+	return false
 
 # Let player shoot once anim is done
 func _on_animation_player_animation_finished(anim_name):
@@ -159,10 +183,12 @@ func _on_animation_player_animation_finished(anim_name):
 func start_bugs() -> void:
 	lookingAtBugs = true
 	bugtimer.start()
+	bugDamageTimer.start()
 
 # Stop bug timer
 func stop_bugs() -> void:
 	lookingAtBugs = false
+	bugDamageTimer.stop()
 	bugtimer.stop()
 
 # Make a bug fly across the screen
@@ -184,3 +210,7 @@ func bloodloss(amount: int) -> void:
 
 func _die() -> void:
 	emit_signal("player_died")
+
+# Take damage from bugs
+func _on_bug_damage_timer_timeout():
+	bloodloss(DAMAGE_FROM_BUGS)

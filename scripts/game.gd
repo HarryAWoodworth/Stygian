@@ -1,19 +1,31 @@
 extends Node3D
 
-# [ ] Damage from Weeping Willow bugs
-# [ ] Damage Effect
+# [ ] 
+
 # [ ] Rats
 # [ ] Slurp some rats to regain blood
+
 # [ ] Blood Boost
 # [ ] Better feeling physics
-# [ ] Wheelchair Twitcher
-# [ ] Simple Stealth system (Directional areas for wheelchair, one smaller for crouching one larger for standing.
+
+# [ ] Twitcher
+# [ ] Simple Stealth system (Directional areas for wheelchair, one smaller for crouching one larger for standing.)
+
 # [ ] Flashlight
 # [ ] Lighting
-# [ ] Rain
+
+# [X] Rain
 # [ ] Rain Effect On Blood
-#	[ ] Cant form
+#	[X] Cant form
 #	[ ] Blood balls dissapear (Raycast straight up?)
+
+# [ ] Pause Menu + Settings
+
+# [ ] Death Screen / Menu
+
+# [ ] Menu UI
+# [ ] Settings
+# [ ] Start
 
 # [ ] SOUND
 #	[ ] Ambience
@@ -89,7 +101,7 @@ func _ready():
 	for weepingWillow in weepingWillows.get_children():
 		weepingWillow.player_seeing_bugs.connect(self._player_is_seeing_bugs)
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	
 	# Handle debug input
 	if Input.is_action_just_pressed("debug") :
@@ -178,7 +190,6 @@ func _on_player_fire_blood_shot(bloodBallCharged: bool):
 		middleFingerLeft.visible = true
 		middleFingerRight.visible = true
 		fingerTimer.start()
-		player.bloodloss(player.BLOODBALL_COST)
 		_createBloodball()
 	else:
 		_on_finger_timer_timeout()
@@ -201,6 +212,7 @@ func _on_finger_timer_timeout():
 
 func _on_bloodball_bloodball_charged():
 	player.bloodBallCharged = true
+	player.bloodloss(player.BLOODBALL_COST)
 
 func _on_player_player_died():
 	print("YOU DIED")
@@ -218,7 +230,7 @@ func _on_player_player_updated_blood(bloodAmount):
 func _on_player_player_took_damage():
 	if vignette_tween != null:
 		vignette_tween.stop()
-	#vignette.modulate = Color(1,1,1,1)
+	vignette.modulate = Color(1,1,1,1)
 	vignette_timer.start()
 
 func _on_vignette_timer_timeout():

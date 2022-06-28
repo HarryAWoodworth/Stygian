@@ -2,9 +2,9 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://q1kem30ecmg8"
-path.s3tc="res://.godot/imported/hand.png-5390196fb1554350de487a1bb25078ac.s3tc.ctex"
-path.etc2="res://.godot/imported/hand.png-5390196fb1554350de487a1bb25078ac.etc2.ctex"
+uid="uid://bmfcoy4kwtprs"
+path.s3tc="res://.godot/imported/Rain.png-ec0321f6ce9956505bd9c83f567795ec.s3tc.ctex"
+path.etc2="res://.godot/imported/Rain.png-ec0321f6ce9956505bd9c83f567795ec.etc2.ctex"
 metadata={
 "imported_formats": ["s3tc", "etc2"],
 "vram_texture": true
@@ -12,13 +12,13 @@ metadata={
 
 [deps]
 
-source_file="res://assets/hand.png"
-dest_files=["res://.godot/imported/hand.png-5390196fb1554350de487a1bb25078ac.s3tc.ctex", "res://.godot/imported/hand.png-5390196fb1554350de487a1bb25078ac.etc2.ctex"]
+source_file="res://assets/Rain.png"
+dest_files=["res://.godot/imported/Rain.png-ec0321f6ce9956505bd9c83f567795ec.s3tc.ctex", "res://.godot/imported/Rain.png-ec0321f6ce9956505bd9c83f567795ec.etc2.ctex"]
 
 [params]
 
 compress/mode=2
-compress/lossy_quality=0.7
+compress/lossy_quality=1.0
 compress/hdr_compression=1
 compress/bptc_ldr=0
 compress/normal_map=0

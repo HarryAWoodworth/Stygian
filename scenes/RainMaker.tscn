@@ -1,0 +1,29 @@
+[gd_scene load_steps=6 format=3 uid="uid://b4khlfg0aurua"]
+
+[ext_resource type="Texture2D" uid="uid://bmfcoy4kwtprs" path="res://assets/Rain.png" id="1_j7l23"]
+[ext_resource type="Script" path="res://scripts/RainMaker.gd" id="2_ewjek"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mb81l"]
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+albedo_texture = ExtResource( "1_j7l23" )
+
+[sub_resource type="ParticlesMaterial" id="ParticlesMaterial_xvc8g"]
+emission_shape = 3
+emission_box_extents = Vector3(30, 30, 1)
+direction = Vector3(0, 0, -1)
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 40.0
+initial_velocity_max = 40.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_jgiq0"]
+
+[node name="RainMaker" type="GPUParticles3D"]
+transform = Transform3D(0.266, 0, 0, 0, 0, 1, 0, -0.266, 0, 0, 0, 0)
+material_override = SubResource( "StandardMaterial3D_mb81l" )
+amount = 250
+process_material = SubResource( "ParticlesMaterial_xvc8g" )
+draw_pass_1 = SubResource( "PlaneMesh_jgiq0" )
+script = ExtResource( "2_ewjek" )
