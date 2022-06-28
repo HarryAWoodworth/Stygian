@@ -7,6 +7,7 @@ signal form_blood_shot
 signal fire_blood_shot(bloodBallCharged)
 signal player_died
 signal player_updated_blood(bloodAmount)
+signal player_took_damage
 
 @onready var neck := $Neck
 @onready var camera := $Neck/Camera3D
@@ -19,10 +20,13 @@ signal player_updated_blood(bloodAmount)
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
-const MOUSE_SENSITIVITY := 0.002
 const CROUCH_HEIGHT := 0.25
 const STARTING_BLOOD := 10
 const BLOODBALL_COST := 1
+
+# Settings
+var CROUCH_TOGGLE := false
+var MOUSE_SENSITIVITY := 0.002 
 
 # Get the gravity from the project settings to be synced with RigidDynamicBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -71,6 +75,7 @@ func _unhandled_input(event) -> void:
 			camera.rotation.x = clamp(camera.rotation.x, deg2rad(-60), deg2rad(60))
 
 func _physics_process(delta):
+	
 	# Add gravity
 	if not is_on_floor():
 		velocity.y -= gravity * delta
@@ -78,29 +83,24 @@ func _physics_process(delta):
 	# Handle Jump
 	if Input.is_action_just_pressed("move_jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-	# Handle Crouch/Stand
-	if Input.is_action_just_pressed("move_crouch"):
-		isCrouching = !isCrouching
-		# Disable/enable relevant collision shapes and lower camera
-		if isCrouching:
-			# Lower the neck to crouch height if on floor
-			if is_on_floor():
-				neck.transform.origin.y = neckHeight * CROUCH_HEIGHT
-				crouchingShape.disabled = false
-			# Otherwise, crouch jump by only bringing hitbox up
-			else:
-				crouchJumpingShape.disabled = false
-			# Disable standing shape
-			standingShape.disabled = true
-		# Raise neck back to stand height
+	
+	# Handle Crouch Toggle
+	if CROUCH_TOGGLE:
+		# Switch stand/crouch based on current state
+		if Input.is_action_just_pressed("move_crouch"):
+			isCrouching = !isCrouching
+			if isCrouching: _crouch()
+			else: _stand()
+	# Handle Crouch Hold
+	else:
+		# If crouch held, crouch if not already
+		if Input.is_action_pressed("move_crouch"):
+			if !isCrouching:
+				isCrouching = true
+				_crouch()
+		# Stand if not pressed
 		else:
-			# If crouch jumped and then landed, raise position before re-enabling standing collision shape
-			if !crouchJumpingShape.disabled and is_on_floor():
-				transform.origin.y += crouchJumpingShape.transform.origin.y
-			neck.transform.origin.y = neckHeight
-			standingShape.disabled = false
-			crouchingShape.disabled = true
-			crouchJumpingShape.disabled = true
+			_stand()
 			
 
 	# Get the input direction and handle the movement/deceleration.
@@ -128,6 +128,28 @@ func _physics_process(delta):
 			emit_signal("fire_blood_shot", bloodBallCharged)
 			bloodBallCharged = false
 
+func _crouch() -> void:
+	# Lower the neck to crouch height if on floor
+	if is_on_floor():
+		neck.transform.origin.y = neckHeight * CROUCH_HEIGHT
+		crouchingShape.disabled = false
+	# Otherwise, crouch jump by only bringing hitbox up
+	else:
+		crouchJumpingShape.disabled = false
+	# Disable standing shape
+	standingShape.disabled = true
+
+# Stand up, accounting for crouch-jump state
+func _stand() -> void:
+	# If crouch jumped and then landed, raise position before re-enabling standing collision shape
+	if !crouchJumpingShape.disabled and is_on_floor():
+		transform.origin.y += crouchJumpingShape.transform.origin.y
+	neck.transform.origin.y = neckHeight
+	standingShape.disabled = false
+	crouchingShape.disabled = true
+	crouchJumpingShape.disabled = true
+	isCrouching = false
+
 # Let player shoot once anim is done
 func _on_animation_player_animation_finished(anim_name):
 	if anim_name == "Pistol_Fire":
@@ -151,6 +173,9 @@ func _on_bug_timer_timeout():
 
 # Take damage to player's blood
 func bloodloss(amount: int) -> void:
+	# If player took damage, emit signal
+	if amount > 0:
+		emit_signal("player_took_damage")
 	blood -= amount
 	if blood <= 0:
 		_die()

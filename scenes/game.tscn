@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://by2aba4ug1oc1"]
+[gd_scene load_steps=23 format=3 uid="uid://by2aba4ug1oc1"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_yb53y"]
 [ext_resource type="Texture2D" uid="uid://cp876w51aq4df" path="res://assets/PlayerPistol.png" id="2_73m64"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://c8s7q30ivo2wm" path="res://assets/bloodform.png" id="6_frpmi"]
 [ext_resource type="Texture2D" uid="uid://mdkvqoslc53m" path="res://assets/middlefinger.png" id="7_2qflb"]
 [ext_resource type="PackedScene" uid="uid://irs2a45c3e4q" path="res://scenes/WeepingWillow.tscn" id="7_57ndx"]
+[ext_resource type="Texture2D" uid="uid://cwl263iwk1s6d" path="res://assets/vignette.png" id="8_6i6jl"]
 [ext_resource type="Texture2D" uid="uid://cj6gb3vpytk71" path="res://assets/spritesheet.png" id="8_6ql7r"]
 [ext_resource type="Script" path="res://scripts/Bloodball2D.gd" id="9_hvqjo"]
 [ext_resource type="PackedScene" uid="uid://cixrtumnkvdh6" path="res://scenes/Vein.tscn" id="10_ln7an"]
@@ -108,6 +109,11 @@ scale = Vector2(0.214873, 0.214873)
 texture = ExtResource( "7_2qflb" )
 flip_h = true
 script = ExtResource( "5_bvmrs" )
+
+[node name="Vignette" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(512, 298)
+scale = Vector2(0.534252, 0.564448)
+texture = ExtResource( "8_6i6jl" )
 
 [node name="Bloodball" type="Sprite2D" parent="CanvasLayer"]
 visible = false
@@ -376,16 +382,19 @@ shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
 [node name="WeepingWillows" type="Node" parent="Actors"]
 
 [node name="WeepingWillow" parent="Actors/WeepingWillows" instance=ExtResource( "7_57ndx" )]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.18917, 1, -2.41769)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.9592, 1, 0)
 
 [node name="CornerWatchers" type="Node" parent="Actors"]
 
 [node name="CornerWatcher" parent="Actors/CornerWatchers" instance=ExtResource( "3_n0274" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 6.26149)
 
 [node name="Projectiles" type="Node" parent="."]
 
 [node name="FingerTimer" type="Timer" parent="."]
 wait_time = 2.0
+
+[node name="VignetteTimer" type="Timer" parent="."]
 
 [connection signal="bloodball_charged" from="CanvasLayer/Bloodball" to="." method="_on_bloodball_bloodball_charged"]
 [connection signal="timeout" from="CanvasLayer/Bloodball/Timer" to="CanvasLayer/Bloodball" method="_on_timer_timeout"]
@@ -393,5 +402,7 @@ wait_time = 2.0
 [connection signal="form_blood_shot" from="Player" to="." method="_on_player_form_blood_shot"]
 [connection signal="make_bug" from="Player" to="." method="_on_player_make_bug"]
 [connection signal="player_died" from="Player" to="." method="_on_player_player_died"]
+[connection signal="player_took_damage" from="Player" to="." method="_on_player_player_took_damage"]
 [connection signal="player_updated_blood" from="Player" to="." method="_on_player_player_updated_blood"]
 [connection signal="timeout" from="FingerTimer" to="." method="_on_finger_timer_timeout"]
+[connection signal="timeout" from="VignetteTimer" to="." method="_on_vignette_timer_timeout"]

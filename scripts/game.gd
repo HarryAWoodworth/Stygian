@@ -1,8 +1,8 @@
 extends Node3D
 
-# [ ] Fix Crouch (Double raycast)
 # [ ] Damage from Weeping Willow bugs
 # [ ] Damage Effect
+# [ ] Rats
 # [ ] Slurp some rats to regain blood
 # [ ] Blood Boost
 # [ ] Better feeling physics
@@ -62,18 +62,28 @@ extends Node3D
 @onready var bloodball2d := $CanvasLayer/Bloodball
 @onready var projectiles := $Projectiles
 @onready var veins := $CanvasLayer/Veins
+@onready var vignette := $CanvasLayer/Vignette
+@onready var vignette_timer := $VignetteTimer
 
 const IN_VISION_THRESHOLD_ANGLE := 55
 const NUMBER_BUGS_PER_TIMER := 5
+const VIGNETTE_TWEEN_TIME := 1.0
 
 const insect = preload("res://scenes/Insect.tscn")
 const bloodball = preload("res://scenes/Bloodball.tscn")
 
+# Tween for damage vignette
+var vignette_tween: Tween
+
 func _debug() -> void:
-	_on_player_make_bug()
+	pass
 
 func _ready():
+	# Randomize
 	randomize()
+	# Ready Vignette
+	vignette.modulate = Color(1,1,1,0)
+	# Set actor targets and connect signals
 	for cornerWatcher in cornerWatchers.get_children():
 		cornerWatcher.setTarget(player)
 	for weepingWillow in weepingWillows.get_children():
@@ -112,17 +122,17 @@ func _player_shoot_raycast_at(space_state, actor: Node) -> bool:
 	var rayParams := PhysicsRayQueryParameters3D.new()
 	rayParams.from = player.neck.global_transform.origin
 	var result
-	
+	# Eyes
 	rayParams.to = actor.global_transform.origin + actor.eye_height_increase
 	result = space_state.intersect_ray(rayParams)
 	if "collider" in result:
 		if result.collider == actor: return true
-	
+	# Torso
 	rayParams.to = actor.global_transform.origin
 	result = space_state.intersect_ray(rayParams)
 	if "collider" in result:
 		if result.collider == actor: return true
-	
+	# Feet
 	rayParams.to = actor.global_transform.origin - actor.eye_height_increase
 	result = space_state.intersect_ray(rayParams)
 	# Return since it will be false if actor is unseen
@@ -197,7 +207,6 @@ func _on_player_player_died():
 
 # Hide / Show veins
 func _on_player_player_updated_blood(bloodAmount):
-	pass
 	var i = 0
 	while i < veins.get_children().size():
 		if i <= bloodAmount-1:
@@ -205,3 +214,14 @@ func _on_player_player_updated_blood(bloodAmount):
 		else:
 			veins.get_child(i).empty()
 		i += 1
+
+func _on_player_player_took_damage():
+	if vignette_tween != null:
+		vignette_tween.stop()
+	#vignette.modulate = Color(1,1,1,1)
+	vignette_timer.start()
+
+func _on_vignette_timer_timeout():
+	vignette_timer.stop()
+	vignette_tween = create_tween()
+	vignette_tween.tween_property(vignette, "modulate", Color(1,1,1,0), VIGNETTE_TWEEN_TIME)
