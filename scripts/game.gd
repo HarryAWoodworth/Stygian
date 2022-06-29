@@ -13,9 +13,6 @@ extends Node3D
 # [ ] Twitcher
 # [ ] Simple Stealth system (Directional areas for wheelchair, one smaller for crouching one larger for standing.)
 
-# [ ] Flashlight
-# [ ] Lighting
-
 # [ ] Pause Menu + Settings
 
 # [ ] Death Screen / Menu

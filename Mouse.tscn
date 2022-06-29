@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://dswsr0cnau2tp"]
+
+[ext_resource type="Texture2D" uid="uid://devw50u4377p7" path="res://assets/Mouse.png" id="1_xyqvo"]
+
+[node name="Mouse" type="CharacterBody3D"]
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.101337, 0, 0, 0, 0.101337, 0, 0, 0, 0.101337, 0, -0.0970215, 0)
+billboard = 1
+texture = ExtResource( "1_xyqvo" )
