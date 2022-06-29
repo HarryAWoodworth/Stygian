@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://dswsr0cnau2tp"]
+
+[ext_resource type="Script" path="res://scripts/Mouse.gd" id="1_5unsl"]
+[ext_resource type="Texture2D" uid="uid://devw50u4377p7" path="res://assets/Mouse.png" id="1_xyqvo"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_6a53f"]
+radius = 0.149905
+
+[node name="Mouse" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 7
+slide_on_ceiling = false
+floor_constant_speed = true
+script = ExtResource( "1_5unsl" )
+
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform3D(0.0192362, 0, 0, 0, 0.0192362, 0, 0, 0, 0.0192362, 0, 0.0296838, 0)
+offset = Vector2(200, 0)
+billboard = 1
+texture = ExtResource( "1_xyqvo" )
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource( "SphereShape3D_6a53f" )
+
+[node name="RayCast3D" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0279345, 0.171464)
+collision_mask = 2

@@ -1,5 +1,15 @@
 extends Node3D
 
+# Questions for Alpha:
+# Is the sound design consistent?
+# Is the sound design scary?
+# Is the atmosphere scary?
+# How does the player movement physics feel
+# Did the player feel too wide or skinny?
+# Does the game run well (Does it lag at any points?)
+# Does the game have clear mechanics?
+# Did you have fun playing the game?
+
 # [ ] Rats
 # 	[ ] cant fall off edges
 # 	[ ] Go in straight line
@@ -56,6 +66,7 @@ extends Node3D
 @onready var actors := $Actors
 @onready var cornerWatchers := $Actors/CornerWatchers
 @onready var weepingWillows := $Actors/WeepingWillows
+@onready var mice := $Actors/Mice
 @onready var player := $Player
 @onready var paths := $CanvasLayer/Paths
 @onready var leftHandIdle := $CanvasLayer/LeftHand
@@ -90,11 +101,15 @@ func _ready():
 	randomize()
 	# Ready Vignette
 	vignette.modulate = Color(1,1,1,0)
-	# Set actor targets and connect signals
+	# Set player as Corner Watcher target
 	for cornerWatcher in cornerWatchers.get_children():
 		cornerWatcher.setTarget(player)
+	# Connect Weeping Willow signals
 	for weepingWillow in weepingWillows.get_children():
 		weepingWillow.player_seeing_bugs.connect(self._player_is_seeing_bugs)
+	# Make mice have a random direction to go
+	for mouse in mice.get_children():
+		mouse.init(Vector3(randf_range(-1.0,1.0), 0, randf_range(-1.0,1.0)))
 
 func _physics_process(_delta):
 	
@@ -107,6 +122,7 @@ func _physics_process(_delta):
 	playerForwardVector.y = 0
 	for actortype in actors.get_children():
 		for actor in actortype.get_children():
+			if actor.has_method("dont_look_at_me"): break
 			var vectorToActorFromPlayer = (player.global_transform.origin - actor.global_transform.origin).normalized()
 			vectorToActorFromPlayer.y = 0
 			var angleBetween = rad2deg(playerForwardVector.angle_to(vectorToActorFromPlayer))

@@ -23,13 +23,16 @@ signal player_took_damage
 @onready var standCast2 := $RayCast3D2
 @onready var standCast3 := $RayCast3D3
 @onready var standCast4 := $RayCast3D4
+@onready var unstuckRay := $Unstuck
 
 const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
+const JUMP_VELOCITY = 5.0
 const CROUCH_HEIGHT := 0.25
 const STARTING_BLOOD := 10
 const BLOODBALL_COST := 1
 const DAMAGE_FROM_BUGS := 1
+# Prevent clipping off small ledges when uncrouching
+const TINY_LEDGE_THRESHOLD := 0.4
 
 # Settings
 var CROUCH_TOGGLE := false
@@ -127,9 +130,7 @@ func _physics_process(delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
-
 	move_and_slide()
-	
 	
 	# Held down blood shot
 	if Input.is_action_pressed("weapon_shoot"):
@@ -143,7 +144,18 @@ func _physics_process(delta):
 			emit_signal("fire_blood_shot", bloodBallCharged)
 			bloodBallCharged = false
 
+	# Get unstuck
+	if unstuckRay.is_colliding():
+		print("Unstuck!")
+		global_transform.origin.y += neckHeight
+	if !isCrouching:
+		for ray in standCasts:
+			if ray.is_colliding():
+				_crouch()
+				break
+
 func _crouch() -> void:
+	unstuckRay.enabled = false
 	# Lower the neck to crouch height if on floor
 	if is_on_floor():
 		neck.transform.origin.y = neckHeight * CROUCH_HEIGHT
@@ -158,13 +170,16 @@ func _crouch() -> void:
 # Stand up, accounting for crouch-jump state
 func _stand() -> void:
 	if _cantStand(): return
+	unstuckRay.enabled = true
 	# If crouch jumped and then landed, raise position before re-enabling standing collision shape
-	if !crouchJumpingShape.disabled and is_on_floor():
-		transform.origin.y += crouchJumpingShape.transform.origin.y
-	neck.transform.origin.y = neckHeight
+	if !crouchJumpingShape.disabled:
+		# Use additional height to avoid falling off tiny edges when standing
+		transform.origin.y += crouchJumpingShape.transform.origin.y + TINY_LEDGE_THRESHOLD
+		crouchJumpingShape.disabled = true
+	else:
+		neck.transform.origin.y = neckHeight
+		crouchingShape.disabled = true
 	standingShape.disabled = false
-	crouchingShape.disabled = true
-	crouchJumpingShape.disabled = true
 	isCrouching = false
 
 func _cantStand():
