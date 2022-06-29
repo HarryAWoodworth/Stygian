@@ -53,6 +53,11 @@ current = true
 transform = Transform3D(-0.999008, 0, -0.0445435, 0, 1, 0, 0.0445435, 0, -0.999008, -0.0208412, 0, -0.46742)
 target_position = Vector3(0, 0, 100)
 
+[node name="Flashlight" type="SpotLight3D" parent="Neck/Camera3D"]
+transform = Transform3D(1, 0, 1.86265e-08, 0, 1, 0, -1.86265e-08, 0, 1, 0.06312, 2.38419e-07, -0.015203)
+spot_range = 75.6883
+spot_angle = 37.5006
+
 [node name="Position3D" type="Position3D" parent="Neck"]
 transform = Transform3D(1, 0, -1.86265e-08, 0, 1, 0, 1.86265e-08, 0, 1, -0.0331865, -0.41989, -0.744296)
 
