@@ -1,11 +1,13 @@
 extends Node3D
 
-# [ ] 
-
 # [ ] Rats
+# 	[ ] cant fall off edges
+# 	[ ] Go in straight line
+# 	[ ] Bounce off surfaces
 # [ ] Slurp some rats to regain blood
 
 # [ ] Blood Boost
+# [ ] Splatter effect when ball queue_frees
 # [ ] Better feeling physics
 
 # [ ] Twitcher
@@ -13,11 +15,6 @@ extends Node3D
 
 # [ ] Flashlight
 # [ ] Lighting
-
-# [X] Rain
-# [ ] Rain Effect On Blood
-#	[X] Cant form
-#	[ ] Blood balls dissapear (Raycast straight up?)
 
 # [ ] Pause Menu + Settings
 
@@ -83,6 +80,7 @@ const VIGNETTE_TWEEN_TIME := 1.0
 
 const insect = preload("res://scenes/Insect.tscn")
 const bloodball = preload("res://scenes/Bloodball.tscn")
+# const bloodsplatter = preload("res://scenes/Bloodsplat.tscn")
 
 # Tween for damage vignette
 var vignette_tween: Tween
@@ -197,6 +195,7 @@ func _on_player_fire_blood_shot(bloodBallCharged: bool):
 func _createBloodball() -> void:
 	var bloodballInstance = bloodball.instantiate()
 	projectiles.add_child(bloodballInstance)
+	# bloodballInstance.add_blood_splat.connect(self._add_blood_splatter)
 	bloodballInstance.init(player.shootPoint.global_transform, -1 * player.camera.get_global_transform().basis.z.normalized())
 
 func _on_finger_timer_timeout():
@@ -232,8 +231,14 @@ func _on_player_player_took_damage():
 		vignette_tween.stop()
 	vignette.modulate = Color(1,1,1,1)
 	vignette_timer.start()
-
 func _on_vignette_timer_timeout():
 	vignette_timer.stop()
 	vignette_tween = create_tween()
 	vignette_tween.tween_property(vignette, "modulate", Color(1,1,1,0), VIGNETTE_TWEEN_TIME)
+
+func _add_blood_splatter(collision_point: Vector3, collision_normal: Vector3) -> void:
+	pass
+#	var bloodsplatterInstance = bloodsplatter.instantiate()
+#	add_child(bloodsplatterInstance)
+#	bloodsplatterInstance.global_transform.origin = collision_point
+#	bloodsplatterInstance.look_at(collision_normal, Vector3.UP)

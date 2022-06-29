@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bjx7sxn5my7m0"]
+
+[ext_resource type="Texture2D" uid="uid://dicfufngqdcoc" path="res://assets/bloodsplat.png" id="1_83uwq"]
+
+[node name="Bloodsplat" type="Decal"]
+visible = false
+texture_albedo = ExtResource( "1_83uwq" )
+texture_normal = ExtResource( "1_83uwq" )
+upper_fade = 1.34042e-05
+lower_fade = 1e-05

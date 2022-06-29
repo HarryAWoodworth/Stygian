@@ -1,6 +1,6 @@
 extends CharacterBody3D
 
-var debug := true
+var debug := false
 
 signal make_bug
 signal form_blood_shot
@@ -23,7 +23,6 @@ signal player_took_damage
 @onready var standCast2 := $RayCast3D2
 @onready var standCast3 := $RayCast3D3
 @onready var standCast4 := $RayCast3D4
-
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
@@ -96,7 +95,7 @@ func _physics_process(delta):
 		velocity.y -= gravity * delta
 	
 	# Check for rain
-	inRain = !rainCast.is_colliding()
+	#inRain = !rainCast.is_colliding()
 	
 	# Handle Jump
 	if Input.is_action_just_pressed("move_jump") and is_on_floor():
@@ -118,7 +117,6 @@ func _physics_process(delta):
 		else:
 			if isCrouching:
 				_stand()
-			
 
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")

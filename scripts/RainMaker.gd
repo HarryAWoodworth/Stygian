@@ -48,7 +48,6 @@ func _make_splash(space_state) -> void:
 	var result = space_state.intersect_ray(rayParams)
 	# If ground is found, get the current splash from the pool and set its positiona and play splash anim
 	if result.size() > 0:
-		print("Splish Splash")
 		var current_splash = splashes[cur_splash_index]
 		current_splash.global_transform.origin = result.position + Vector3(0,how_far_splash_into_ground,0)
 		current_splash.splash()

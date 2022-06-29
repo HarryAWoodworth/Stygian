@@ -19,6 +19,7 @@ height = 1.01843
 
 [node name="Player" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_mask = 6
 script = ExtResource( "1_uakye" )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -63,18 +64,22 @@ transform = Transform3D(-0.710494, 0.275688, -0.647453, -0.100792, 0.87071, 0.48
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.513, 0.1, 0.02)
 target_position = Vector3(0, 1, 0)
+collision_mask = 2
 
 [node name="RayCast3D2" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.508, 0.1, 0)
 target_position = Vector3(0, 1, 0)
+collision_mask = 2
 
 [node name="RayCast3D3" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.001, 0.1, -0.515)
 target_position = Vector3(0, 1, 0)
+collision_mask = 2
 
 [node name="RayCast3D4" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.01, 0.1, 0.512)
 target_position = Vector3(0, 1, 0)
+collision_mask = 2
 
 [node name="BugTimer" type="Timer" parent="."]
 wait_time = 0.05
@@ -84,6 +89,7 @@ wait_time = 1.5
 
 [node name="RainCast" type="RayCast3D" parent="."]
 target_position = Vector3(0, 200, 0)
+collision_mask = 2
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="timeout" from="BugTimer" to="." method="_on_bug_timer_timeout"]

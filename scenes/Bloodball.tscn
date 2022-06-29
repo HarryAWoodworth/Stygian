@@ -6,8 +6,10 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_a4ycu"]
 radius = 1.97858
 
-[node name="Bloodball" type="Area3D"]
+[node name="Bloodball" type="CharacterBody3D"]
 transform = Transform3D(0.294798, 0, 0, 0, 0.294798, 0, 0, 0, 0.294798, 0, 0, 0)
+collision_layer = 8
+collision_mask = 6
 script = ExtResource( "1_xjuow" )
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
@@ -31,7 +33,7 @@ autostart = true
 
 [node name="RainCast" type="RayCast3D" parent="."]
 target_position = Vector3(0, 200, 0)
+collision_mask = 2
 
-[connection signal="body_entered" from="." to="." method="_on_bloodball_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="LifeTimer" to="." method="_on_life_timer_timeout"]
