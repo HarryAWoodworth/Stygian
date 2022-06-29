@@ -8,9 +8,19 @@ var inPlayerVision := false
 # Eye height is 0 since we only want to activate if the core of the actor is seen
 var eye_height_increase := Vector3.ZERO
 
+func setTarget(target_: Node) -> void:
+	target = target_
+
 func setInPlayerVision(inPlayerVision_: bool) -> void:
 	inPlayerVision = inPlayerVision_
-	emit_signal("player_seeing_bugs", inPlayerVision)
+	#emit_signal("player_seeing_bugs", inPlayerVision)
+
+func _process(_delta):
+	print("WW Rot: " , global_transform.basis.get_euler())
+	if target != null:
+		var target_xz = Vector3(target.global_transform.origin.x, 0 , target.global_transform.origin.z)
+		look_at(target_xz, Vector3.UP)
+		rotation.x = 0.0
 
 func got_shot() -> void:
 	take_damage(1)

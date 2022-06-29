@@ -3,8 +3,7 @@
 [ext_resource type="Script" path="res://scripts/Mouse.gd" id="1_5unsl"]
 [ext_resource type="Texture2D" uid="uid://devw50u4377p7" path="res://assets/Mouse.png" id="1_xyqvo"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_6a53f"]
-radius = 0.149905
+[sub_resource type="BoxShape3D" id="BoxShape3D_8o5im"]
 
 [node name="Mouse" type="CharacterBody3D"]
 collision_layer = 4
@@ -20,7 +19,8 @@ billboard = 1
 texture = ExtResource( "1_xyqvo" )
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource( "SphereShape3D_6a53f" )
+transform = Transform3D(0.287142, 0, 0, 0, 0.145821, 0, 0, 0, 0.309962, 0.00566238, 0.0318231, 0.00350573)
+shape = SubResource( "BoxShape3D_8o5im" )
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0279345, 0.171464)

@@ -22,6 +22,12 @@ func _physics_process(delta):
 	if target == null:
 		set_physics_process(false)
 		return
+		
+	# Turn towards target
+	var target_xz = Vector3(target.global_transform.origin.x, 0 , target.global_transform.origin.z)
+	look_at(target_xz, Vector3.UP)
+	rotation.x = 0.0
+		
 	# Position of target
 	var targetPosition: Vector3 = target.global_transform.origin
 	# Normalize the vector because only direction is needed

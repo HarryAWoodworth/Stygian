@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 @onready var floorCast := $RayCast3D
+@onready var sprite := $Sprite3D
 
 const SPEED := 5.0
 
@@ -17,19 +18,18 @@ func _physics_process(delta):
 	# Apply direction velocity
 	direction = direction.normalized()
 	velocity.x = direction.x * SPEED
-	velocity.x = direction.z * SPEED
+	velocity.z = direction.z * SPEED
 	# Add gravity
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	# Move
+	# move_and_collide()
 	move_and_slide()
-	# Move Raycast
-	floorCast.global_transform.origin = global_transform.origin + (velocity.normalized() * 0.1)
 	
 	# Bounce if mouse hits a wall
 	if is_on_wall():
-		var slideCollision = get_last_slide_collision()
-		direction = slideCollision.get_normal()
+		direction = direction.bounce(get_wall_normal())
+		sprite.flip_h = !sprite.flip_h
 	# Bounce if mouse hits a ledge
 	if !floorCast.is_colliding():
 		pass

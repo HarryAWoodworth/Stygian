@@ -3,9 +3,8 @@
 [ext_resource type="Script" path="res://scripts/WeepingWillow.gd" id="1_sowkr"]
 [ext_resource type="Texture2D" uid="uid://0s0cbbutvvey" path="res://assets/WeepingWillow.png" id="2_vu5yl"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cjmwk"]
-radius = 0.640095
-height = 2.43041
+[sub_resource type="BoxShape3D" id="BoxShape3D_qkxk1"]
+size = Vector3(1.65702, 1, 1)
 
 [node name="WeepingWillow" type="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
@@ -15,9 +14,9 @@ script = ExtResource( "1_sowkr" )
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(0.148992, 0.0173603, 0, -0.0173603, 0.148992, 0, 0, 0, 1, 0, 0.0686104, 0)
-billboard = 2
+shaded = true
 texture = ExtResource( "2_vu5yl" )
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0961854, 0)
-shape = SubResource( "CapsuleShape3D_cjmwk" )
+transform = Transform3D(1, 0, 0, 0, 2.41934, 0, 0, 0, 0.250277, 0, 0.0961854, 0)
+shape = SubResource( "BoxShape3D_qkxk1" )

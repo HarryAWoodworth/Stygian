@@ -104,9 +104,10 @@ func _ready():
 	# Set player as Corner Watcher target
 	for cornerWatcher in cornerWatchers.get_children():
 		cornerWatcher.setTarget(player)
-	# Connect Weeping Willow signals
+	# Connect Weeping Willow signals and set target
 	for weepingWillow in weepingWillows.get_children():
 		weepingWillow.player_seeing_bugs.connect(self._player_is_seeing_bugs)
+		weepingWillow.setTarget(player)
 	# Make mice have a random direction to go
 	for mouse in mice.get_children():
 		mouse.init(Vector3(randf_range(-1.0,1.0), 0, randf_range(-1.0,1.0)))
