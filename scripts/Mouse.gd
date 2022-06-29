@@ -3,7 +3,7 @@ extends CharacterBody3D
 @onready var floorCast := $RayCast3D
 @onready var sprite := $Sprite3D
 
-const SPEED := 5.0
+const SPEED := 4.0
 
 var direction := Vector3.ZERO
 
@@ -36,6 +36,9 @@ func _physics_process(delta):
 		#direction = (-direction + Vector3(randf_range(0,0.2), 0, randf_range(0,0.2))).normalized()
 		# Move it slightly back so it doesnt get stuck
 		#global_transform.origin += direction/5
+
+func getSlurped() -> void:
+	queue_free()
 
 # Player doesnt need to calculate angle to this actor
 func dont_look_at_me() -> void:

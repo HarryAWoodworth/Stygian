@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://by2aba4ug1oc1"]
+[gd_scene load_steps=32 format=3 uid="uid://by2aba4ug1oc1"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_yb53y"]
 [ext_resource type="Texture2D" uid="uid://cp876w51aq4df" path="res://assets/PlayerPistol.png" id="2_73m64"]
@@ -6,14 +6,18 @@
 [ext_resource type="Texture2D" uid="uid://elwgejcncnyr" path="res://assets/GunFire.png" id="4_dynp8"]
 [ext_resource type="Script" path="res://scripts/InvisOnReady.gd" id="5_bvmrs"]
 [ext_resource type="Texture2D" uid="uid://q1kem30ecmg8" path="res://assets/hand.png" id="5_qmwjr"]
+[ext_resource type="Texture2D" uid="uid://cy5o30k78kiaf" path="res://assets/HandGrab.png" id="6_5a2km"]
 [ext_resource type="Texture2D" uid="uid://c8s7q30ivo2wm" path="res://assets/bloodform.png" id="6_frpmi"]
 [ext_resource type="Texture2D" uid="uid://mdkvqoslc53m" path="res://assets/middlefinger.png" id="7_2qflb"]
 [ext_resource type="Texture2D" uid="uid://cwl263iwk1s6d" path="res://assets/vignette.png" id="8_6i6jl"]
 [ext_resource type="Texture2D" uid="uid://cj6gb3vpytk71" path="res://assets/spritesheet.png" id="8_6ql7r"]
 [ext_resource type="Script" path="res://scripts/Bloodball2D.gd" id="9_hvqjo"]
+[ext_resource type="Texture2D" uid="uid://cmlejoovyqhyd" path="res://assets/HandEat.png" id="9_ty6kd"]
 [ext_resource type="PackedScene" uid="uid://cixrtumnkvdh6" path="res://scenes/Vein.tscn" id="10_ln7an"]
+[ext_resource type="Texture2D" uid="uid://f5d7cockgywb" path="res://assets/GreenVignette.png" id="11_p87mv"]
 [ext_resource type="PackedScene" uid="uid://irs2a45c3e4q" path="res://scenes/WeepingWillow.tscn" id="13_0bro4"]
 [ext_resource type="PackedScene" uid="uid://dswsr0cnau2tp" path="res://scenes/Mouse.tscn" id="13_bt31e"]
+[ext_resource type="Texture2D" uid="uid://bj5uibecuxvye" path="res://assets/crosshair.png" id="14_c44tt"]
 [ext_resource type="PackedScene" uid="uid://bxjr1c2a3nsmu" path="res://scenes/CornerWatcher.tscn" id="14_oi6vs"]
 [ext_resource type="PackedScene" uid="uid://b4khlfg0aurua" path="res://scenes/RainMaker.tscn" id="15_kl5sr"]
 
@@ -91,15 +95,20 @@ scale = Vector2(0.177538, 0.177538)
 texture = ExtResource( "5_qmwjr" )
 flip_h = true
 
+[node name="HandGrab" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(551, 468)
+rotation = 0.538066
+scale = Vector2(0.299689, 0.299689)
+texture = ExtResource( "6_5a2km" )
+script = ExtResource( "5_bvmrs" )
+
 [node name="BloodformLeft" type="Sprite2D" parent="CanvasLayer"]
-visible = false
 position = Vector2(162, 481)
 scale = Vector2(0.209717, 0.209717)
 texture = ExtResource( "6_frpmi" )
 script = ExtResource( "5_bvmrs" )
 
 [node name="BloodformRight" type="Sprite2D" parent="CanvasLayer"]
-visible = false
 position = Vector2(869, 481)
 scale = Vector2(0.209717, 0.209717)
 texture = ExtResource( "6_frpmi" )
@@ -107,7 +116,6 @@ flip_h = true
 script = ExtResource( "5_bvmrs" )
 
 [node name="MiddleFingerLeft" type="Sprite2D" parent="CanvasLayer"]
-visible = false
 position = Vector2(194, 429)
 rotation = 0.0999591
 scale = Vector2(0.214873, 0.214873)
@@ -115,7 +123,6 @@ texture = ExtResource( "7_2qflb" )
 script = ExtResource( "5_bvmrs" )
 
 [node name="MiddleFingerRight" type="Sprite2D" parent="CanvasLayer"]
-visible = false
 position = Vector2(833, 432)
 rotation = -0.0761359
 scale = Vector2(0.214873, 0.214873)
@@ -123,10 +130,22 @@ texture = ExtResource( "7_2qflb" )
 flip_h = true
 script = ExtResource( "5_bvmrs" )
 
+[node name="HandEat" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(496, 540)
+rotation = 0.0952269
+scale = Vector2(0.247793, 0.247793)
+texture = ExtResource( "9_ty6kd" )
+script = ExtResource( "5_bvmrs" )
+
 [node name="Vignette" type="Sprite2D" parent="CanvasLayer"]
 position = Vector2(512, 298)
 scale = Vector2(0.534252, 0.564448)
 texture = ExtResource( "8_6i6jl" )
+
+[node name="GreenVignette" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(512, 298)
+scale = Vector2(-1.05927, -1.37019)
+texture = ExtResource( "11_p87mv" )
 
 [node name="Bloodball" type="Sprite2D" parent="CanvasLayer"]
 visible = false
@@ -318,6 +337,12 @@ rotation = -0.731555
 position = Vector2(137, 541)
 rotation = 0.486407
 
+[node name="Crosshair" type="Sprite2D" parent="CanvasLayer"]
+texture_filter = 1
+position = Vector2(512, 300)
+scale = Vector2(3, 3)
+texture = ExtResource( "14_c44tt" )
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( "Environment_7j6pr" )
 
@@ -329,7 +354,7 @@ mesh = SubResource( "PlaneMesh_l54ap" )
 
 [node name="StaticBody3D" type="StaticBody3D" parent="Floor"]
 collision_layer = 2
-collision_mask = 15
+collision_mask = 31
 
 [node name="CollisionShape" type="CollisionShape3D" parent="Floor/StaticBody3D"]
 shape = SubResource( "ConcavePolygonShape3D_pxe7d" )
@@ -343,7 +368,7 @@ skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="TestObstacles/Test"]
 collision_layer = 2
-collision_mask = 15
+collision_mask = 31
 
 [node name="@@39257" type="CollisionShape3D" parent="TestObstacles/Test/StaticBody3D"]
 shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
@@ -355,7 +380,7 @@ skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="TestObstacles/Test2"]
 collision_layer = 2
-collision_mask = 15
+collision_mask = 31
 
 [node name="39257" type="CollisionShape3D" parent="TestObstacles/Test2/StaticBody3D"]
 shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
@@ -367,7 +392,7 @@ skeleton = NodePath("../..")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="TestObstacles/Test3"]
 collision_layer = 2
-collision_mask = 15
+collision_mask = 31
 
 [node name="39257" type="CollisionShape3D" parent="TestObstacles/Test3/StaticBody3D"]
 shape = SubResource( "ConcavePolygonShape3D_d4lfy" )
@@ -377,6 +402,8 @@ transform = Transform3D(1, 0, 0, 0, 3.79408, 0, 0, 0, 7.93404, 0, -1.16212, 0)
 mesh = SubResource( "BoxMesh_s7i88" )
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="TestObstacles/MeshInstance3D"]
+collision_layer = 2
+collision_mask = 31
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TestObstacles/MeshInstance3D/StaticBody3D2"]
 shape = SubResource( "ConcavePolygonShape3D_22elk" )
@@ -386,6 +413,8 @@ transform = Transform3D(1, 0, 0, 0, 3.79408, 0, 0, 0, 7.93404, 5.3984, -1.16212,
 mesh = SubResource( "BoxMesh_s7i88" )
 
 [node name="StaticBody3D" type="StaticBody3D" parent="TestObstacles/MeshInstance3D2"]
+collision_layer = 2
+collision_mask = 31
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TestObstacles/MeshInstance3D2/StaticBody3D"]
 shape = SubResource( "ConcavePolygonShape3D_uklnd" )
@@ -395,6 +424,8 @@ transform = Transform3D(0, 0, 7.93404, 0, 3.79408, 0, -1, 0, 0, 2.37061, -1.1621
 mesh = SubResource( "BoxMesh_s7i88" )
 
 [node name="StaticBody3D" type="StaticBody3D" parent="TestObstacles/MeshInstance3D3"]
+collision_layer = 2
+collision_mask = 31
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TestObstacles/MeshInstance3D3/StaticBody3D"]
 shape = SubResource( "ConcavePolygonShape3D_8valf" )
@@ -404,6 +435,8 @@ transform = Transform3D(0, 0, 7.93404, 0, 3.79408, 0, -1, 0, 0, 2.37061, -1.1621
 mesh = SubResource( "BoxMesh_s7i88" )
 
 [node name="StaticBody3D" type="StaticBody3D" parent="TestObstacles/MeshInstance3D4"]
+collision_layer = 2
+collision_mask = 31
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TestObstacles/MeshInstance3D4/StaticBody3D"]
 shape = SubResource( "ConcavePolygonShape3D_741ea" )
@@ -425,6 +458,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.44009, 1, 0)
 [node name="Mouse" parent="Actors/Mice" instance=ExtResource( "13_bt31e" )]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.15074, 0.14847, 0)
 
+[node name="Mouse2" parent="Actors/Mice" instance=ExtResource( "13_bt31e" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.96096, 0.14847, 0)
+
+[node name="Mouse3" parent="Actors/Mice" instance=ExtResource( "13_bt31e" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.60735, 0.14847, 0)
+
+[node name="Mouse4" parent="Actors/Mice" instance=ExtResource( "13_bt31e" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.27929, 0.14847, 0)
+
 [node name="Projectiles" type="Node" parent="."]
 
 [node name="FingerTimer" type="Timer" parent="."]
@@ -432,9 +474,10 @@ wait_time = 2.0
 
 [node name="VignetteTimer" type="Timer" parent="."]
 
+[node name="GreenVignetteTimer" type="Timer" parent="."]
+
 [node name="RainMaker" parent="." instance=ExtResource( "15_kl5sr" )]
 transform = Transform3D(1.02941, 0, 0, 0, 0, 3.87132, 0, -1.02941, 0, 0, 23.5044, 0)
-visible = false
 visibility_aabb = AABB(-10.4345, -10.2893, -6.10481, 20.869, 20.5787, 12.2096)
 splash_area = 25.0
 splashes_per_second = 600
@@ -446,7 +489,9 @@ how_far_splash_into_ground = 0.0
 [connection signal="form_blood_shot" from="Player" to="." method="_on_player_form_blood_shot"]
 [connection signal="make_bug" from="Player" to="." method="_on_player_make_bug"]
 [connection signal="player_died" from="Player" to="." method="_on_player_player_died"]
+[connection signal="player_gained_health" from="Player" to="." method="_on_player_player_gained_health"]
 [connection signal="player_took_damage" from="Player" to="." method="_on_player_player_took_damage"]
 [connection signal="player_updated_blood" from="Player" to="." method="_on_player_player_updated_blood"]
 [connection signal="timeout" from="FingerTimer" to="." method="_on_finger_timer_timeout"]
 [connection signal="timeout" from="VignetteTimer" to="." method="_on_vignette_timer_timeout"]
+[connection signal="timeout" from="GreenVignetteTimer" to="." method="_on_green_vignette_timer_timeout"]

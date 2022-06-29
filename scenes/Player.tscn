@@ -50,23 +50,24 @@ shape = SubResource( "BoxShape3D_4vfiy" )
 script = ExtResource( "2_5utnx" )
 
 [node name="Neck" type="Node3D" parent="."]
-transform = Transform3D(-0.999007, 0, 0.0445435, 0, 1, 0, -0.0445435, 0, -0.999007, 0, 0.638595, 0)
+transform = Transform3D(-1, 0, -8.74227e-08, 0, 1, 0, 8.74227e-08, 0, -1, 0, 0.638595, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Neck"]
-transform = Transform3D(1, 0, -2.23517e-08, 0, 1, 0, 1.86265e-08, 0, 1, -0.06312, -2.38419e-07, 0.015203)
+transform = Transform3D(1, 0, -2.23517e-08, 0, 1, 0, 1.86265e-08, 0, 1, 0, 0, 0)
 current = true
 
-[node name="GunRayCast" type="RayCast3D" parent="Neck/Camera3D"]
-transform = Transform3D(-0.999008, 0, -0.0445435, 0, 1, 0, 0.0445435, 0, -0.999008, -0.0208412, 0, -0.46742)
-target_position = Vector3(0, 0, 100)
+[node name="CameraRayCast" type="RayCast3D" parent="Neck/Camera3D"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -0.002)
+target_position = Vector3(0, 0, 5)
+collision_mask = 16
 
 [node name="Flashlight" type="SpotLight3D" parent="Neck/Camera3D"]
-transform = Transform3D(1, 0, 1.86265e-08, 0, 1, 0, -1.86265e-08, 0, 1, 0.06312, 2.38419e-07, -0.015203)
+transform = Transform3D(1, 0, 1.86265e-08, 0, 1, 0, -1.86265e-08, 0, 1, 0, 0, 0)
 spot_range = 75.6883
 spot_angle = 37.5006
 
 [node name="Position3D" type="Position3D" parent="Neck"]
-transform = Transform3D(1, 0, -1.86265e-08, 0, 1, 0, 1.86265e-08, 0, 1, -0.0331865, -0.41989, -0.744296)
+transform = Transform3D(1, 0, -1.86265e-08, 0, 1, 0, 1.86265e-08, 0, 1, 0, -0.178859, -0.484)
 
 [node name="UncrouchRaycasts" type="Node" parent="Neck"]
 

@@ -8,10 +8,11 @@ signal fire_blood_shot(bloodBallCharged)
 signal player_died
 signal player_updated_blood(bloodAmount)
 signal player_took_damage
+signal player_gained_health
 
 @onready var neck := $Neck
 @onready var camera := $Neck/Camera3D
-@onready var gunraycast := $Neck/Camera3D/GunRayCast
+@onready var cameraRay := $Neck/Camera3D/CameraRayCast
 @onready var standingShape := $StandingCollisionShape
 @onready var crouchingShape := $CrouchingCollisionShape
 @onready var crouchJumpingShape := $CrouchJumpCollisionShape
@@ -132,17 +133,25 @@ func _physics_process(delta):
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 	move_and_slide()
 	
-	# Held down blood shot
-	if Input.is_action_pressed("weapon_shoot"):
-		if !inRain and !inBloodForm and canForm:
-			inBloodForm = true
-			emit_signal("form_blood_shot")
-	# If released, fire blood shot
+	# Check for mouse slurp
+	if Input.is_action_just_pressed("weapon_shoot") and cameraRay.is_colliding():
+		var mouse = cameraRay.get_collider()
+		mouse.getSlurped()
+		# Gain a health
+		bloodloss(-1)
+	
 	else:
-		if !inRain and inBloodForm:
-			inBloodForm = false
-			emit_signal("fire_blood_shot", bloodBallCharged)
-			bloodBallCharged = false
+		# Held down blood shot
+		if Input.is_action_pressed("weapon_shoot"):
+			if !inRain and !inBloodForm and canForm:
+				inBloodForm = true
+				emit_signal("form_blood_shot")
+			# If released, fire blood shot
+		else:
+			if !inRain and inBloodForm:
+				inBloodForm = false
+				emit_signal("fire_blood_shot", bloodBallCharged)
+				bloodBallCharged = false
 
 	# Get unstuck
 	if unstuckRay.is_colliding():
@@ -215,6 +224,8 @@ func bloodloss(amount: int) -> void:
 	# If player took damage, emit signal
 	if amount > 0:
 		emit_signal("player_took_damage")
+	else:
+		emit_signal("player_gained_health")
 	blood -= amount
 	if blood <= 0:
 		_die()

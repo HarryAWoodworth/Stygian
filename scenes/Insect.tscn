@@ -9,5 +9,6 @@ loop = false
 script = ExtResource( "2_t7q23" )
 
 [node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
 texture = ExtResource( "1_2u76w" )
 hframes = 3

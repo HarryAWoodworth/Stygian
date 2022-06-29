@@ -10,11 +10,14 @@ extends Node3D
 # Does the game have clear mechanics?
 # Did you have fun playing the game?
 
-# [ ] Rats
-# 	[ ] cant fall off edges
-# 	[ ] Go in straight line
-# 	[ ] Bounce off surfaces
-# [ ] Slurp some rats to regain blood
+# [X] Fix ray and camera misalignment
+# [x] Add mouse slurp and green vignette
+# [X] Add larger mouse hitbox
+# [X] Make player camera raycast shorter (and then longer)
+# [X] Remove white edge around Weeping Willow insect sprites and fixed pixel blur
+
+# [ ] Fix regained veins not pumping blood
+# [ ] Make it so mouse flips sprite based on what direction it is travelling from you
 
 # [ ] Blood Boost
 # [ ] Splatter effect when ball queue_frees
@@ -80,9 +83,13 @@ extends Node3D
 @onready var projectiles := $Projectiles
 @onready var veins := $CanvasLayer/Veins
 @onready var vignette := $CanvasLayer/Vignette
+@onready var green_vignette := $CanvasLayer/GreenVignette
 @onready var vignette_timer := $VignetteTimer
+@onready var green_vignette_timer := $GreenVignetteTimer
 
-const IN_VISION_THRESHOLD_ANGLE := 55
+const IN_VISION_THRESHOLD_ANGLE := 45
+const IN_VISION_THRESHOLD_ANGLE_CORNER_WATCHER := 45
+
 const NUMBER_BUGS_PER_TIMER := 5
 const VIGNETTE_TWEEN_TIME := 1.0
 
@@ -92,6 +99,8 @@ const bloodball = preload("res://scenes/Bloodball.tscn")
 
 # Tween for damage vignette
 var vignette_tween: Tween
+# Tween for health vignette
+var green_vignette_tween: Tween
 
 func _debug() -> void:
 	pass
@@ -99,8 +108,9 @@ func _debug() -> void:
 func _ready():
 	# Randomize
 	randomize()
-	# Ready Vignette
+	# Ready Vignettes
 	vignette.modulate = Color(1,1,1,0)
+	green_vignette.modulate = Color(1,1,1,0)
 	# Set player as Corner Watcher target
 	for cornerWatcher in cornerWatchers.get_children():
 		cornerWatcher.setTarget(player)
@@ -120,15 +130,15 @@ func _physics_process(_delta):
 	
 	# Get the angle between player camera and all actors 
 	var playerForwardVector: Vector3 = player.camera.get_global_transform().basis.z.normalized()
-	playerForwardVector.y = 0
 	for actortype in actors.get_children():
+		var in_vision_threshold_angle = IN_VISION_THRESHOLD_ANGLE
+		if actortype.name == "CornerWatchers": in_vision_threshold_angle = IN_VISION_THRESHOLD_ANGLE_CORNER_WATCHER
 		for actor in actortype.get_children():
 			if actor.has_method("dont_look_at_me"): break
 			var vectorToActorFromPlayer = (player.global_transform.origin - actor.global_transform.origin).normalized()
-			vectorToActorFromPlayer.y = 0
 			var angleBetween = rad2deg(playerForwardVector.angle_to(vectorToActorFromPlayer))
 			# Set if actor is in player vision
-			var isInPlayerVisionAngle = abs(angleBetween) < IN_VISION_THRESHOLD_ANGLE
+			var isInPlayerVisionAngle = abs(angleBetween) < in_vision_threshold_angle
 			# If so, check if it is visible to the player via raycast
 			if isInPlayerVisionAngle:
 				var space_state = get_world_3d().direct_space_state
@@ -245,10 +255,23 @@ func _on_player_player_took_damage():
 		vignette_tween.stop()
 	vignette.modulate = Color(1,1,1,1)
 	vignette_timer.start()
+
+func _on_player_player_gained_health():
+	if green_vignette_tween != null:
+		green_vignette_tween.stop()
+	print("Slurp")
+	green_vignette.modulate = Color(1,1,1,1)
+	green_vignette_timer.start()
+
 func _on_vignette_timer_timeout():
 	vignette_timer.stop()
 	vignette_tween = create_tween()
 	vignette_tween.tween_property(vignette, "modulate", Color(1,1,1,0), VIGNETTE_TWEEN_TIME)
+
+func _on_green_vignette_timer_timeout():
+	green_vignette_timer.stop()
+	green_vignette_tween = create_tween()
+	green_vignette_tween.tween_property(green_vignette, "modulate", Color(1,1,1,0), VIGNETTE_TWEEN_TIME)
 
 func _add_blood_splatter(collision_point: Vector3, collision_normal: Vector3) -> void:
 	pass

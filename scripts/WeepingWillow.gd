@@ -13,10 +13,9 @@ func setTarget(target_: Node) -> void:
 
 func setInPlayerVision(inPlayerVision_: bool) -> void:
 	inPlayerVision = inPlayerVision_
-	#emit_signal("player_seeing_bugs", inPlayerVision)
+	emit_signal("player_seeing_bugs", inPlayerVision)
 
 func _process(_delta):
-	print("WW Rot: " , global_transform.basis.get_euler())
 	if target != null:
 		var target_xz = Vector3(target.global_transform.origin.x, 0 , target.global_transform.origin.z)
 		look_at(target_xz, Vector3.UP)
