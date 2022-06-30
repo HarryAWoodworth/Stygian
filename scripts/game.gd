@@ -17,6 +17,7 @@ extends Node3D
 # [X] Added Resume button
 # [X] Fixed extra player input when interacting with pause menu
 # [X] Custom Mouse Pointer
+# [X] Added more code comments
 
 
 # [ ] Blood Boost
