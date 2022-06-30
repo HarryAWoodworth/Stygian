@@ -3,7 +3,8 @@ extends CharacterBody3D
 @onready var floorCast := $RayCast3D
 @onready var sprite := $Sprite3D
 
-const SPEED := 4.0
+const SPEED := 3.0
+
 
 var direction := Vector3.ZERO
 var inPlayerVision := false
@@ -20,6 +21,7 @@ func init(player_: Node, direction_: Vector3) -> void:
 func _physics_process(delta):
 	
 	# Apply direction velocity
+	direction = direction.normalized()
 	velocity.x = direction.x * SPEED
 	velocity.z = direction.z * SPEED
 	# Add gravity
@@ -32,15 +34,11 @@ func _physics_process(delta):
 	# Bounce if mouse hits a wall
 	if is_on_wall():
 		direction = direction.bounce(get_wall_normal())
-		sprite.flip_h = !sprite.flip_h
 	# Bounce if mouse hits a ledge
 	#if !floorCast.is_colliding():
 		#direction = (-direction + Vector3(randf_range(0,0.2), 0, randf_range(0,0.2))).normalized()
 		# Move it slightly back so it doesnt get stuck
 		#global_transform.origin += direction/5
-	
-	# Normalize direction
-	direction = direction.normalized()
 	
 	# Turn sprite based on direction compared to player
 	if inPlayerVision:
@@ -48,12 +46,11 @@ func _physics_process(delta):
 		playerOriginNoY.y = 0
 		var mouseOriginNoY = global_transform.origin
 		mouseOriginNoY.y = 0
-		var vectorFromPlayerToMouse = (mouseOriginNoY - playerOriginNoY).normalized()
-		var angleVectorDirection = rad2deg(vectorFromPlayerToMouse.angle_to(direction))
-		if angleVectorDirection < 90:
-			_face_right()
-		else:
-			_face_left()
+		var vectorFromPlayerToMouse = (mouseOriginNoY - playerOriginNoY)
+		var angleVectorDirection = rad2deg(playerOriginNoY.signed_angle_to(direction, Vector3.UP))
+		if angleVectorDirection < 0: _face_left()
+		else: _face_right()
+		
 
 func _face_left() -> void:
 	sprite.flip_h = false

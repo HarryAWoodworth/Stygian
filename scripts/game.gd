@@ -10,13 +10,9 @@ extends Node3D
 # Does the game have clear mechanics?
 # Did you have fun playing the game?
 
-# [X] Add custom "in player vision" angles for different actor types
-# [X] Fix regained veins not pumping blood
-# [X] Added code comments
-# [X] Added hand animation to mouse slurp mechanic
-# [ ] Make it so mouse flips sprite based on what direction it is travelling from you
-
+# [ ] Hide veins when grabbing mouse
 # [ ] Remove rad2deg calls
+# [ ] Improve slurp sprite
 
 # [ ] Blood Boost
 # [ ] Splatter effect when ball queue_frees
