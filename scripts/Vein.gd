@@ -23,6 +23,7 @@ func empty() -> void:
 func fill() -> void:
 	isEmpty = false
 	modulate = Color(1,0,0)
+	timer.start()
 
 func _on_timer_timeout():
 	timer.stop()

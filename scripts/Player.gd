@@ -9,6 +9,8 @@ signal player_died
 signal player_updated_blood(bloodAmount)
 signal player_took_damage
 signal player_gained_health
+signal open_menu
+signal slurped_mouse
 
 @onready var neck := $Neck
 @onready var camera := $Neck/Camera3D
@@ -63,6 +65,8 @@ var eye_height_increase: Vector3
 var blood: int
 # Is the player in the rain?
 var inRain := false
+# Is the player eating a mouse?
+var slurpingMouse := false
 
 func _ready():
 	# Save stand casts
@@ -82,8 +86,9 @@ func _unhandled_input(event) -> void:
 	if event is InputEventMouseButton:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	# If escape is pressed, make the mouse visible
-	elif event.is_action_pressed("ui_cancel"):
+	elif event.is_action_pressed("menu_open"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		emit_signal("open_menu")
 	# Move the camera based on the mouse
 	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		if event is InputEventMouseMotion:
@@ -133,13 +138,17 @@ func _physics_process(delta):
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 	move_and_slide()
 	
+	# No mouseclick input if eating
+	if slurpingMouse: return
+	
 	# Check for mouse slurp
 	if Input.is_action_just_pressed("weapon_shoot") and cameraRay.is_colliding():
 		var mouse = cameraRay.get_collider()
 		mouse.getSlurped()
+		emit_signal("slurped_mouse")
 		# Gain a health
 		bloodloss(-1)
-	
+		slurpingMouse = true
 	else:
 		# Held down blood shot
 		if Input.is_action_pressed("weapon_shoot"):
