@@ -17,6 +17,7 @@ config/icon="res://icon.png"
 
 [display]
 
+mouse_cursor/custom_image="res://assets/mouse_empty.png"
 window/stretch/mode="viewport"
 
 [input]

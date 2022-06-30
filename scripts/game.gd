@@ -10,9 +10,14 @@ extends Node3D
 # Does the game have clear mechanics?
 # Did you have fun playing the game?
 
-# [ ] Hide veins when grabbing mouse
-# [ ] Remove rad2deg calls
-# [ ] Improve slurp sprite
+# [X] Hide veins when grabbing mouse
+# [X] Actually fix mouse sprite flipping
+# [X] Improve slurp sprite
+# [X] Added Pause Menu
+# [X] Added Resume button
+# [X] Fixed extra player input when interacting with pause menu
+# [X] Custom Mouse Pointer
+
 
 # [ ] Blood Boost
 # [ ] Splatter effect when ball queue_frees
@@ -21,7 +26,7 @@ extends Node3D
 # [ ] Twitcher
 # [ ] Simple Stealth system (Directional areas for wheelchair, one smaller for crouching one larger for standing.)
 
-# [ ] Pause Menu + Settings
+# [ ] Settings
 
 # [ ] Death Screen / Menu
 
@@ -58,6 +63,10 @@ extends Node3D
 #		[ ] Hit Noise
 #		[ ] Death Noise
 
+# Optimizations
+# [ ] Remove rad2deg calls
+# [ ] Cull sprites
+
 # Things you turn on with blood?
 # Ex. A generator for lights/doors that runs on blood
 
@@ -85,6 +94,8 @@ extends Node3D
 @onready var green_vignette := $CanvasLayer/GreenVignette
 @onready var vignette_timer := $VignetteTimer
 @onready var green_vignette_timer := $GreenVignetteTimer
+@onready var mouse_pointer := $CanvasLayer/MousePointer
+@onready var pause_menu := $CanvasLayer/PauseMenu
 
 const IN_VISION_THRESHOLD_ANGLE := 45
 const IN_VISION_THRESHOLD_ANGLE_CORNER_WATCHER := 45
@@ -107,6 +118,8 @@ func _debug() -> void:
 func _ready():
 	# Randomize
 	randomize()
+	# Ready Menu
+	pause_menu.visible = false
 	# Ready Vignettes
 	vignette.modulate = Color(1,1,1,0)
 	green_vignette.modulate = Color(1,1,1,0)
@@ -294,9 +307,19 @@ func _add_blood_splatter(collision_point: Vector3, collision_normal: Vector3) ->
 
 # Open the main menu
 func _on_player_open_menu():
-	pass # Replace with function body.
+	mouse_pointer.setActive(true)
+	pause_menu.visible = true
+
+func _on_player_close_menu():
+	mouse_pointer.setActive(false)
+	pause_menu.visible = false
 
 func _on_player_slurped_mouse():
+	veins.get_child(2).visible = false
+	veins.get_child(3).visible = false
+	veins.get_child(4).visible = false
+	veins.get_child(7).visible = false
+	veins.get_child(8).visible = false
 	rightHandIdle.visible = false
 	handGrab.visible = true
 	grabbingTimer.start()
@@ -305,6 +328,11 @@ func _on_eating_timer_timeout():
 	eatingTimer.stop()
 	handEat.visible = false
 	rightHandIdle.visible = true
+	veins.get_child(2).visible = true
+	veins.get_child(3).visible = true
+	veins.get_child(4).visible = true
+	veins.get_child(7).visible = true
+	veins.get_child(8).visible = true
 	player.slurpingMouse = false
 
 func _on_grabbing_timer_timeout():
@@ -312,3 +340,6 @@ func _on_grabbing_timer_timeout():
 	handGrab.visible = false
 	handEat.visible = true
 	eatingTimer.start()
+
+func _on_pause_menu_resume_game():
+	_on_player_close_menu()

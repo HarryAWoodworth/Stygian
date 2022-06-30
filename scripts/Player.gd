@@ -10,6 +10,7 @@ signal player_updated_blood(bloodAmount)
 signal player_took_damage
 signal player_gained_health
 signal open_menu
+signal close_menu
 signal slurped_mouse
 
 @onready var neck := $Neck
@@ -31,8 +32,11 @@ signal slurped_mouse
 const SPEED = 5.0
 const JUMP_VELOCITY = 5.0
 const CROUCH_HEIGHT := 0.25
+# Starting player health, needs to equal vein nodes
 const STARTING_BLOOD := 10
+# Health cost of firing a bloodball
 const BLOODBALL_COST := 1
+# Damage per tick of bug hurt
 const DAMAGE_FROM_BUGS := 1
 # Prevent clipping off small ledges when uncrouching
 const TINY_LEDGE_THRESHOLD := 0.4
@@ -67,6 +71,8 @@ var blood: int
 var inRain := false
 # Is the player eating a mouse?
 var slurpingMouse := false
+# Is the menu open?
+var menu_open := false
 
 func _ready():
 	# Save stand casts
@@ -85,17 +91,30 @@ func _unhandled_input(event) -> void:
 	# If screen is clicked, hide mouse
 	if event is InputEventMouseButton:
 		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		if menu_open: _close_menu()
 	# If escape is pressed, make the mouse visible
 	elif event.is_action_pressed("menu_open"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-		emit_signal("open_menu")
+		if !menu_open: _open_menu()
+		else: _close_menu()
 	# Move the camera based on the mouse
-	if Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+	if !menu_open and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
 		if event is InputEventMouseMotion:
 			neck.rotate_y(-event.relative.x * MOUSE_SENSITIVITY)
 			camera.rotate_x(-event.relative.y * MOUSE_SENSITIVITY)
 			# Clamp camera
 			camera.rotation.x = clamp(camera.rotation.x, deg2rad(-60), deg2rad(60))
+
+# Open the menu
+func _open_menu() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	emit_signal("open_menu")
+	menu_open = true
+
+# Close the menu
+func _close_menu() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	emit_signal("close_menu")
+	menu_open = false
 
 func _physics_process(delta):
 	

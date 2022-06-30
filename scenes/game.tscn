@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://by2aba4ug1oc1"]
+[gd_scene load_steps=31 format=3 uid="uid://by2aba4ug1oc1"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_yb53y"]
 [ext_resource type="Texture2D" uid="uid://cp876w51aq4df" path="res://assets/PlayerPistol.png" id="2_73m64"]
@@ -12,12 +12,13 @@
 [ext_resource type="Texture2D" uid="uid://cwl263iwk1s6d" path="res://assets/vignette.png" id="8_6i6jl"]
 [ext_resource type="Texture2D" uid="uid://cj6gb3vpytk71" path="res://assets/spritesheet.png" id="8_6ql7r"]
 [ext_resource type="Script" path="res://scripts/Bloodball2D.gd" id="9_hvqjo"]
-[ext_resource type="Texture2D" uid="uid://cmlejoovyqhyd" path="res://assets/HandEat.png" id="9_ty6kd"]
 [ext_resource type="PackedScene" uid="uid://cixrtumnkvdh6" path="res://scenes/Vein.tscn" id="10_ln7an"]
 [ext_resource type="Texture2D" uid="uid://f5d7cockgywb" path="res://assets/GreenVignette.png" id="11_p87mv"]
 [ext_resource type="PackedScene" uid="uid://dswsr0cnau2tp" path="res://scenes/Mouse.tscn" id="13_bt31e"]
 [ext_resource type="Texture2D" uid="uid://bj5uibecuxvye" path="res://assets/crosshair.png" id="14_c44tt"]
 [ext_resource type="PackedScene" uid="uid://b4khlfg0aurua" path="res://scenes/RainMaker.tscn" id="15_kl5sr"]
+[ext_resource type="PackedScene" uid="uid://c71ggjc16i0lx" path="res://scenes/PauseMenu.tscn" id="16_aehtq"]
+[ext_resource type="Script" path="res://scripts/MousePointer.gd" id="16_lnuld"]
 
 [sub_resource type="Curve2D" id="Curve2D_42ttw"]
 _data = {
@@ -94,6 +95,7 @@ texture = ExtResource( "5_qmwjr" )
 flip_h = true
 
 [node name="HandGrab" type="Sprite2D" parent="CanvasLayer"]
+visible = false
 position = Vector2(551, 468)
 rotation = 0.538066
 scale = Vector2(0.299689, 0.299689)
@@ -101,12 +103,14 @@ texture = ExtResource( "6_5a2km" )
 script = ExtResource( "5_bvmrs" )
 
 [node name="BloodformLeft" type="Sprite2D" parent="CanvasLayer"]
+visible = false
 position = Vector2(162, 481)
 scale = Vector2(0.209717, 0.209717)
 texture = ExtResource( "6_frpmi" )
 script = ExtResource( "5_bvmrs" )
 
 [node name="BloodformRight" type="Sprite2D" parent="CanvasLayer"]
+visible = false
 position = Vector2(869, 481)
 scale = Vector2(0.209717, 0.209717)
 texture = ExtResource( "6_frpmi" )
@@ -114,6 +118,7 @@ flip_h = true
 script = ExtResource( "5_bvmrs" )
 
 [node name="MiddleFingerLeft" type="Sprite2D" parent="CanvasLayer"]
+visible = false
 position = Vector2(194, 429)
 rotation = 0.0999591
 scale = Vector2(0.214873, 0.214873)
@@ -121,6 +126,7 @@ texture = ExtResource( "7_2qflb" )
 script = ExtResource( "5_bvmrs" )
 
 [node name="MiddleFingerRight" type="Sprite2D" parent="CanvasLayer"]
+visible = false
 position = Vector2(833, 432)
 rotation = -0.0761359
 scale = Vector2(0.214873, 0.214873)
@@ -129,21 +135,31 @@ flip_h = true
 script = ExtResource( "5_bvmrs" )
 
 [node name="HandEat" type="Sprite2D" parent="CanvasLayer"]
-position = Vector2(496, 540)
-rotation = 0.0952269
-scale = Vector2(0.247793, 0.247793)
-texture = ExtResource( "9_ty6kd" )
+visible = false
+position = Vector2(639, 689)
+rotation = 3.8329
+scale = Vector2(0.378945, 0.378945)
+texture = ExtResource( "6_5a2km" )
+flip_h = true
 script = ExtResource( "5_bvmrs" )
 
 [node name="Vignette" type="Sprite2D" parent="CanvasLayer"]
+visible = false
 position = Vector2(512, 298)
 scale = Vector2(0.534252, 0.564448)
 texture = ExtResource( "8_6i6jl" )
 
 [node name="GreenVignette" type="Sprite2D" parent="CanvasLayer"]
+visible = false
 position = Vector2(512, 298)
 scale = Vector2(-1.05927, -1.37019)
 texture = ExtResource( "11_p87mv" )
+
+[node name="Crosshair" type="Sprite2D" parent="CanvasLayer"]
+texture_filter = 1
+position = Vector2(512, 300)
+scale = Vector2(3, 3)
+texture = ExtResource( "14_c44tt" )
 
 [node name="Bloodball" type="Sprite2D" parent="CanvasLayer"]
 visible = false
@@ -295,51 +311,58 @@ curve = SubResource( "Curve2D_42ttw" )
 
 [node name="Veins" type="Node" parent="CanvasLayer"]
 
-[node name="Vein2" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+[node name="Vein1" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
 position = Vector2(98, 546)
 rotation = 0.82973
 
-[node name="Vein3" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+[node name="Vein2" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
 position = Vector2(21, 545)
 rotation = 0.82973
 
-[node name="Vein4" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+[node name="Vein3" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
 position = Vector2(912, 538)
 rotation = 2.23631
 
-[node name="Vein5" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+[node name="Vein4" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
 position = Vector2(987, 522)
 rotation = 2.23631
 
-[node name="Vein6" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+[node name="Vein5" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
 position = Vector2(937, 509)
 rotation = 2.23631
 
-[node name="Vein7" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+[node name="Vein6" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
 position = Vector2(141, 490)
 rotation = 0.973213
 
-[node name="Vein8" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+[node name="Vein7" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
 position = Vector2(38, 573)
 rotation = 0.759868
 
-[node name="Vein9" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+[node name="Vein8" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
 position = Vector2(876, 550)
 rotation = -0.731555
 
-[node name="Vein10" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+[node name="Vein9" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
 position = Vector2(989, 572)
 rotation = -0.731555
 
-[node name="Vein11" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
+[node name="Vein10" parent="CanvasLayer/Veins" instance=ExtResource( "10_ln7an" )]
 position = Vector2(137, 541)
 rotation = 0.486407
 
-[node name="Crosshair" type="Sprite2D" parent="CanvasLayer"]
-texture_filter = 1
-position = Vector2(512, 300)
-scale = Vector2(3, 3)
-texture = ExtResource( "14_c44tt" )
+[node name="PauseMenu" parent="CanvasLayer" instance=ExtResource( "16_aehtq" )]
+offset_left = 76.0
+offset_top = 39.0
+offset_right = 208.0
+offset_bottom = 1790.0
+scale = Vector2(0.0589675, 0.05271)
+
+[node name="MousePointer" type="Sprite2D" parent="CanvasLayer"]
+scale = Vector2(0.0319244, 0.0319244)
+texture = ExtResource( "5_qmwjr" )
+flip_h = true
+script = ExtResource( "16_lnuld" )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( "Environment_7j6pr" )
@@ -474,6 +497,8 @@ how_far_splash_into_ground = 0.0
 
 [connection signal="bloodball_charged" from="CanvasLayer/Bloodball" to="." method="_on_bloodball_bloodball_charged"]
 [connection signal="timeout" from="CanvasLayer/Bloodball/Timer" to="CanvasLayer/Bloodball" method="_on_timer_timeout"]
+[connection signal="resume_game" from="CanvasLayer/PauseMenu" to="." method="_on_pause_menu_resume_game"]
+[connection signal="close_menu" from="Player" to="." method="_on_player_close_menu"]
 [connection signal="fire_blood_shot" from="Player" to="." method="_on_player_fire_blood_shot"]
 [connection signal="form_blood_shot" from="Player" to="." method="_on_player_form_blood_shot"]
 [connection signal="make_bug" from="Player" to="." method="_on_player_make_bug"]
