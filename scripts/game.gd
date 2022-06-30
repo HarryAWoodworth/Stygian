@@ -10,15 +10,9 @@ extends Node3D
 # Does the game have clear mechanics?
 # Did you have fun playing the game?
 
-# [X] Hide veins when grabbing mouse
-# [X] Actually fix mouse sprite flipping
-# [X] Improve slurp sprite
-# [X] Added Pause Menu
-# [X] Added Resume button
+# [X] Fixed a bunch of misc warnigns
 # [X] Fixed extra player input when interacting with pause menu
-# [X] Custom Mouse Pointer
-# [X] Added more code comments
-
+# [X] Added death screen
 
 # [ ] Blood Boost
 # [ ] Splatter effect when ball queue_frees
@@ -97,12 +91,14 @@ extends Node3D
 @onready var green_vignette_timer := $GreenVignetteTimer
 @onready var mouse_pointer := $CanvasLayer/MousePointer
 @onready var pause_menu := $CanvasLayer/PauseMenu
+@onready var deathbox := $CanvasLayer/DeathBox
 
 const IN_VISION_THRESHOLD_ANGLE := 45
 const IN_VISION_THRESHOLD_ANGLE_CORNER_WATCHER := 45
 
 const NUMBER_BUGS_PER_TIMER := 5
 const VIGNETTE_TWEEN_TIME := 1.0
+const DEATHBOX_TWEEN_TIME := 1.0
 
 const insect = preload("res://scenes/Insect.tscn")
 const bloodball = preload("res://scenes/Bloodball.tscn")
@@ -112,6 +108,8 @@ const bloodball = preload("res://scenes/Bloodball.tscn")
 var vignette_tween: Tween
 # Tween for health vignette
 var green_vignette_tween: Tween
+# Tween for death box fade in
+var death_tween: Tween
 
 func _debug() -> void:
 	pass
@@ -119,6 +117,8 @@ func _debug() -> void:
 func _ready():
 	# Randomize
 	randomize()
+	# Ready deathbox
+	deathbox.modulate = Color(1,1,1,0)
 	# Ready Menu
 	pause_menu.visible = false
 	# Ready Vignettes
@@ -260,7 +260,10 @@ func _on_bloodball_bloodball_charged():
 	player.bloodloss(player.BLOODBALL_COST)
 
 func _on_player_player_died():
-	print("YOU DIED")
+	deathbox.visible = true
+	death_tween = create_tween()
+	death_tween.tween_property(deathbox, "modulate", Color(1,1,1,1), DEATHBOX_TWEEN_TIME)
+	death_tween.tween_callback(_open_retry_menu)
 
 # Hide / Show veins
 func _on_player_player_updated_blood(bloodAmount):
@@ -299,21 +302,30 @@ func _on_green_vignette_timer_timeout():
 	green_vignette_tween.tween_property(green_vignette, "modulate", Color(1,1,1,0), VIGNETTE_TWEEN_TIME)
 
 # Commented out cause decals are kind of funky
-func _add_blood_splatter(collision_point: Vector3, collision_normal: Vector3) -> void:
+func _add_blood_splatter(_collision_point: Vector3, _collision_normal: Vector3) -> void:
 	pass
 #	var bloodsplatterInstance = bloodsplatter.instantiate()
 #	add_child(bloodsplatterInstance)
 #	bloodsplatterInstance.global_transform.origin = collision_point
 #	bloodsplatterInstance.look_at(collision_normal, Vector3.UP)
 
-# Open the main menu
+# Open the pause menu
 func _on_player_open_menu():
 	mouse_pointer.setActive(true)
-	pause_menu.visible = true
+	pause_menu.show_menu(false)
 
+# Close the pause menu
 func _on_player_close_menu():
 	mouse_pointer.setActive(false)
-	pause_menu.visible = false
+	pause_menu.hide_menu()
+
+# Free mouse and show retry menu
+func _open_retry_menu() -> void:
+	# Free the mouse
+	player.set_mouse_mode_visible()
+	mouse_pointer.setActive(true)
+	# Show menu in retry mode
+	pause_menu.show_menu(true)
 
 func _on_player_slurped_mouse():
 	veins.get_child(2).visible = false

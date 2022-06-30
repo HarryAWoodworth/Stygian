@@ -12,7 +12,7 @@ func init(startForm: Transform3D, direction: Vector3):
 	transform = startForm
 	velocity = direction * speed
 
-func _process(delta):
+func _process(_delta):
 	# Move ball
 	#transform.origin += velocity * delta
 	move_and_slide()

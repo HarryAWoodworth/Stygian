@@ -5,7 +5,7 @@ var active: bool
 func _ready():
 	setActive(false)
 
-func _process(delta):
+func _process(_delta):
 	if active:
 		position = get_viewport().get_mouse_position()
 

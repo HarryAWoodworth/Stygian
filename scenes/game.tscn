@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://by2aba4ug1oc1"]
+[gd_scene load_steps=33 format=3 uid="uid://by2aba4ug1oc1"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_yb53y"]
 [ext_resource type="Texture2D" uid="uid://cp876w51aq4df" path="res://assets/PlayerPistol.png" id="2_73m64"]
@@ -16,6 +16,8 @@
 [ext_resource type="Texture2D" uid="uid://f5d7cockgywb" path="res://assets/GreenVignette.png" id="11_p87mv"]
 [ext_resource type="PackedScene" uid="uid://dswsr0cnau2tp" path="res://scenes/Mouse.tscn" id="13_bt31e"]
 [ext_resource type="Texture2D" uid="uid://bj5uibecuxvye" path="res://assets/crosshair.png" id="14_c44tt"]
+[ext_resource type="PackedScene" uid="uid://bxjr1c2a3nsmu" path="res://scenes/CornerWatcher.tscn" id="14_oi6vs"]
+[ext_resource type="Texture2D" uid="uid://bp4yjy53nkhgn" path="res://assets/deathbox.png" id="15_2jhd8"]
 [ext_resource type="PackedScene" uid="uid://b4khlfg0aurua" path="res://scenes/RainMaker.tscn" id="15_kl5sr"]
 [ext_resource type="PackedScene" uid="uid://c71ggjc16i0lx" path="res://scenes/PauseMenu.tscn" id="16_aehtq"]
 [ext_resource type="Script" path="res://scripts/MousePointer.gd" id="16_lnuld"]
@@ -144,13 +146,11 @@ flip_h = true
 script = ExtResource( "5_bvmrs" )
 
 [node name="Vignette" type="Sprite2D" parent="CanvasLayer"]
-visible = false
 position = Vector2(512, 298)
 scale = Vector2(0.534252, 0.564448)
 texture = ExtResource( "8_6i6jl" )
 
 [node name="GreenVignette" type="Sprite2D" parent="CanvasLayer"]
-visible = false
 position = Vector2(512, 298)
 scale = Vector2(-1.05927, -1.37019)
 texture = ExtResource( "11_p87mv" )
@@ -351,6 +351,12 @@ rotation = -0.731555
 position = Vector2(137, 541)
 rotation = 0.486407
 
+[node name="DeathBox" type="Sprite2D" parent="CanvasLayer"]
+position = Vector2(513, 301)
+scale = Vector2(109.517, 68.3281)
+texture = ExtResource( "15_2jhd8" )
+script = ExtResource( "5_bvmrs" )
+
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource( "16_aehtq" )]
 offset_left = 76.0
 offset_top = 39.0
@@ -467,6 +473,9 @@ shape = SubResource( "ConcavePolygonShape3D_741ea" )
 [node name="WeepingWillows" type="Node" parent="Actors"]
 
 [node name="CornerWatchers" type="Node" parent="Actors"]
+
+[node name="CornerWatcher" parent="Actors/CornerWatchers" instance=ExtResource( "14_oi6vs" )]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.37391, 1.07659, -0.237525)
 
 [node name="Mice" type="Node" parent="Actors"]
 

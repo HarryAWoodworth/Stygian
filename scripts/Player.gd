@@ -73,6 +73,8 @@ var inRain := false
 var slurpingMouse := false
 # Is the menu open?
 var menu_open := false
+# Is the player dead?
+var dead := false
 
 func _ready():
 	# Save stand casts
@@ -104,9 +106,12 @@ func _unhandled_input(event) -> void:
 			# Clamp camera
 			camera.rotation.x = clamp(camera.rotation.x, deg2rad(-60), deg2rad(60))
 
+func set_mouse_mode_visible() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+
 # Open the menu
 func _open_menu() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	set_mouse_mode_visible()
 	emit_signal("open_menu")
 	menu_open = true
 
@@ -122,8 +127,11 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 	
+	# Check for open menu
+	if menu_open: return
+	
 	# Check for rain
-	#inRain = !rainCast.is_colliding()
+	inRain = !rainCast.is_colliding()
 	
 	# Handle Jump
 	if Input.is_action_just_pressed("move_jump") and is_on_floor():
@@ -261,6 +269,8 @@ func bloodloss(amount: int) -> void:
 		emit_signal("player_updated_blood", blood)
 
 func _die() -> void:
+	dead = true
+	set_physics_process(false)
 	emit_signal("player_died")
 
 # Take damage from bugs

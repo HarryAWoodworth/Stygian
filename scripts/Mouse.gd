@@ -46,7 +46,6 @@ func _physics_process(delta):
 		playerOriginNoY.y = 0
 		var mouseOriginNoY = global_transform.origin
 		mouseOriginNoY.y = 0
-		var vectorFromPlayerToMouse = (mouseOriginNoY - playerOriginNoY)
 		var angleVectorDirection = rad2deg(playerOriginNoY.signed_angle_to(direction, Vector3.UP))
 		if angleVectorDirection < 0: _face_left()
 		else: _face_right()

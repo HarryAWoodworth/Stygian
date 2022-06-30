@@ -18,7 +18,7 @@ func setTarget(newTarget: Node) -> void:
 	else:
 		print("CORNERWATCHER: Tried to set target as null.")
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if target == null:
 		set_physics_process(false)
 		return
@@ -87,7 +87,7 @@ func _on_damage_area_body_entered(body):
 		body.bloodloss(DAMAGE)
 		timer.start()
 
-func _on_damage_area_body_exited(body):
+func _on_damage_area_body_exited(_body):
 	killingTarget = null
 	timer.stop()
 
