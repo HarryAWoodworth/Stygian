@@ -10,9 +10,10 @@ extends Node3D
 # Does the game have clear mechanics?
 # Did you have fun playing the game?
 
-# [X] Fixed a bunch of misc warnigns
-# [X] Fixed extra player input when interacting with pause menu
-# [X] Added death screen
+# [ ] Make resume button capture the mouse properly
+# [ ] Vignette pump
+# [ ] Exit to OS button
+# [ ] Exit to menu button
 
 # [ ] Blood Boost
 # [ ] Splatter effect when ball queue_frees
@@ -23,13 +24,10 @@ extends Node3D
 
 # [ ] Settings
 
-# [ ] Death Screen / Menu
-
-# [ ] Menu UI
-# [ ] Settings
-# [ ] Start
+# [ ] Main Menu UI
 
 # [ ] SOUND
+#	[ ] Menu Noises
 #	[ ] Ambience
 #	[ ] Music
 #	[ ] Rat Slurp
@@ -355,4 +353,4 @@ func _on_grabbing_timer_timeout():
 	eatingTimer.start()
 
 func _on_pause_menu_resume_game():
-	_on_player_close_menu()
+	player._close_menu()
