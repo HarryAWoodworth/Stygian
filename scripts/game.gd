@@ -10,11 +10,6 @@ extends Node3D
 # Does the game have clear mechanics?
 # Did you have fun playing the game?
 
-# [ ] Make resume button capture the mouse properly
-# [ ] Vignette pump
-# [ ] Exit to OS button
-# [ ] Exit to menu button
-
 # [ ] Blood Boost
 # [ ] Splatter effect when ball queue_frees
 # [ ] Better feeling physics
@@ -85,8 +80,6 @@ extends Node3D
 @onready var veins := $CanvasLayer/Veins
 @onready var vignette := $CanvasLayer/Vignette
 @onready var green_vignette := $CanvasLayer/GreenVignette
-@onready var vignette_timer := $VignetteTimer
-@onready var green_vignette_timer := $GreenVignetteTimer
 @onready var mouse_pointer := $CanvasLayer/MousePointer
 @onready var pause_menu := $CanvasLayer/PauseMenu
 @onready var deathbox := $CanvasLayer/DeathBox
@@ -277,25 +270,19 @@ func _on_player_player_updated_blood(bloodAmount):
 func _on_player_player_took_damage():
 	if vignette_tween != null:
 		vignette_tween.stop()
+	# Show red vignette
 	vignette.modulate = Color(1,1,1,1)
-	vignette_timer.start()
+	# Fade vignette
+	vignette_tween = create_tween()
+	vignette_tween.tween_property(vignette, "modulate", Color(1,1,1,0), VIGNETTE_TWEEN_TIME)
 
 # Show green vignette on player health gain
 func _on_player_player_gained_health():
 	if green_vignette_tween != null:
 		green_vignette_tween.stop()
+	# Show green vignette
 	green_vignette.modulate = Color(1,1,1,1)
-	green_vignette_timer.start()
-
-# Fade red vignette
-func _on_vignette_timer_timeout():
-	vignette_timer.stop()
-	vignette_tween = create_tween()
-	vignette_tween.tween_property(vignette, "modulate", Color(1,1,1,0), VIGNETTE_TWEEN_TIME)
-
-# Fade green vignette
-func _on_green_vignette_timer_timeout():
-	green_vignette_timer.stop()
+	# Fade vignette
 	green_vignette_tween = create_tween()
 	green_vignette_tween.tween_property(green_vignette, "modulate", Color(1,1,1,0), VIGNETTE_TWEEN_TIME)
 
