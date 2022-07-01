@@ -358,10 +358,10 @@ texture = ExtResource( "15_2jhd8" )
 script = ExtResource( "5_bvmrs" )
 
 [node name="PauseMenu" parent="CanvasLayer" instance=ExtResource( "16_aehtq" )]
-offset_left = 76.0
-offset_top = 39.0
-offset_right = 208.0
-offset_bottom = 1790.0
+offset_left = 27.0
+offset_top = 27.0
+offset_right = 159.0
+offset_bottom = 5396.0
 scale = Vector2(0.0589675, 0.05271)
 
 [node name="MousePointer" type="Sprite2D" parent="CanvasLayer"]
