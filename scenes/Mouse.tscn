@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://dswsr0cnau2tp"]
+[gd_scene load_steps=6 format=3 uid="uid://dswsr0cnau2tp"]
 
 [ext_resource type="Script" path="res://scripts/Mouse.gd" id="1_5unsl"]
 [ext_resource type="Texture2D" uid="uid://devw50u4377p7" path="res://assets/Mouse.png" id="1_xyqvo"]
+[ext_resource type="Script" path="res://scenes/MouseSlurpArea.gd" id="3_j3d4x"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_8o5im"]
 
@@ -32,6 +33,7 @@ collision_mask = 2
 [node name="Area3D" type="Area3D" parent="."]
 collision_layer = 16
 collision_mask = 0
+script = ExtResource( "3_j3d4x" )
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource( "SphereShape3D_ttvvo" )
