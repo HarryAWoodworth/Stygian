@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://by2aba4ug1oc1"]
+[gd_scene load_steps=33 format=3 uid="uid://by2aba4ug1oc1"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_yb53y"]
 [ext_resource type="Texture2D" uid="uid://cp876w51aq4df" path="res://assets/PlayerPistol.png" id="2_73m64"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://mdkvqoslc53m" path="res://assets/middlefinger.png" id="7_2qflb"]
 [ext_resource type="Texture2D" uid="uid://cwl263iwk1s6d" path="res://assets/vignette.png" id="8_6i6jl"]
 [ext_resource type="Texture2D" uid="uid://cj6gb3vpytk71" path="res://assets/spritesheet.png" id="8_6ql7r"]
+[ext_resource type="Texture2D" uid="uid://cmlejoovyqhyd" path="res://assets/HandEat.png" id="9_aujym"]
 [ext_resource type="Script" path="res://scripts/Bloodball2D.gd" id="9_hvqjo"]
 [ext_resource type="PackedScene" uid="uid://cixrtumnkvdh6" path="res://scenes/Vein.tscn" id="10_ln7an"]
 [ext_resource type="Texture2D" uid="uid://f5d7cockgywb" path="res://assets/GreenVignette.png" id="11_p87mv"]
@@ -136,12 +137,9 @@ flip_h = true
 script = ExtResource( "5_bvmrs" )
 
 [node name="HandEat" type="Sprite2D" parent="CanvasLayer"]
-visible = false
-position = Vector2(639, 689)
-rotation = 3.8329
-scale = Vector2(0.378945, 0.378945)
-texture = ExtResource( "6_5a2km" )
-flip_h = true
+position = Vector2(508, 345)
+scale = Vector2(0.238791, 0.238791)
+texture = ExtResource( "9_aujym" )
 script = ExtResource( "5_bvmrs" )
 
 [node name="Vignette" type="Sprite2D" parent="CanvasLayer"]
@@ -351,6 +349,7 @@ position = Vector2(137, 541)
 rotation = 0.486407
 
 [node name="DeathBox" type="Sprite2D" parent="CanvasLayer"]
+visible = false
 position = Vector2(513, 301)
 scale = Vector2(109.517, 68.3281)
 texture = ExtResource( "15_2jhd8" )
