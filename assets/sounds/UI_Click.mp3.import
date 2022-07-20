@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://hbeiwd3adddj"
+path="res://.godot/imported/UI_Click.mp3-de315af2e3f6b8a728c4b58c6d0eb132.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/UI_Click.mp3"
+dest_files=["res://.godot/imported/UI_Click.mp3-de315af2e3f6b8a728c4b58c6d0eb132.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

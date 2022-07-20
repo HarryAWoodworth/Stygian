@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://blyipuixx2ptq"
+path="res://.godot/imported/PlayerDamage.mp3-0be999fa59173ffb52c6ed4df851c6a3.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/PlayerDamage.mp3"
+dest_files=["res://.godot/imported/PlayerDamage.mp3-0be999fa59173ffb52c6ed4df851c6a3.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

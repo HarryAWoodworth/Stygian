@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b6oiokuf6smjl"
+path="res://.godot/imported/GrabMouse.mp3-722bcac5be26cba3088329653581f53a.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/GrabMouse.mp3"
+dest_files=["res://.godot/imported/GrabMouse.mp3-722bcac5be26cba3088329653581f53a.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

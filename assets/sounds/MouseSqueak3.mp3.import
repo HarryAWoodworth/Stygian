@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://doytajdyu70m4"
+path="res://.godot/imported/MouseSqueak3.mp3-e4ee256007916d49c9340bb0e83aa9d6.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/MouseSqueak3.mp3"
+dest_files=["res://.godot/imported/MouseSqueak3.mp3-e4ee256007916d49c9340bb0e83aa9d6.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

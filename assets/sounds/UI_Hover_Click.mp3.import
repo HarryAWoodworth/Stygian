@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://csd7v3dngwx21"
+path="res://.godot/imported/UI_Hover_Click.mp3-45c3d377f471316672f782fcde8ce30a.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/UI_Hover_Click.mp3"
+dest_files=["res://.godot/imported/UI_Hover_Click.mp3-45c3d377f471316672f782fcde8ce30a.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

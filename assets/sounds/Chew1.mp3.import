@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://crbiycaxsvnci"
+path="res://.godot/imported/Chew1.mp3-718910f32a7986aa059bf862a9b1c9c7.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/Chew1.mp3"
+dest_files=["res://.godot/imported/Chew1.mp3-718910f32a7986aa059bf862a9b1c9c7.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

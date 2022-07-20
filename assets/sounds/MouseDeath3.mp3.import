@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b8vjxa3ko4mo"
+path="res://.godot/imported/MouseDeath3.mp3-f69ae5b90d5dd7f8b3a4601f06ff52e5.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/MouseDeath3.mp3"
+dest_files=["res://.godot/imported/MouseDeath3.mp3-f69ae5b90d5dd7f8b3a4601f06ff52e5.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

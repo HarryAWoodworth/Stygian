@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://qv8r6yv8rfug"
+path="res://.godot/imported/SlurpMouse.mp3-48e7593cae31be2d30adc796122ff871.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/SlurpMouse.mp3"
+dest_files=["res://.godot/imported/SlurpMouse.mp3-48e7593cae31be2d30adc796122ff871.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

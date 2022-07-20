@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cmo3v3uf7c2a"
+path="res://.godot/imported/Crunch2.mp3-1c0675c230bcb455e9f39aebedd4919b.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/Crunch2.mp3"
+dest_files=["res://.godot/imported/Crunch2.mp3-1c0675c230bcb455e9f39aebedd4919b.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0

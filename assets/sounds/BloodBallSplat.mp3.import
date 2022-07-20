@@ -1,0 +1,16 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dhe4atv8tuhey"
+path="res://.godot/imported/BloodBallSplat.mp3-df39222988debc1eaf543df44eb5dd09.mp3str"
+
+[deps]
+
+source_file="res://assets/sounds/BloodBallSplat.mp3"
+dest_files=["res://.godot/imported/BloodBallSplat.mp3-df39222988debc1eaf543df44eb5dd09.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0
