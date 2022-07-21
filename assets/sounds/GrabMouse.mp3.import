@@ -12,5 +12,5 @@ dest_files=["res://.godot/imported/GrabMouse.mp3-722bcac5be26cba3088329653581f53
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

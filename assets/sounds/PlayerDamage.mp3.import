@@ -12,5 +12,5 @@ dest_files=["res://.godot/imported/PlayerDamage.mp3-0be999fa59173ffb52c6ed4df851
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

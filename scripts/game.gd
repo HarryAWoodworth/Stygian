@@ -83,6 +83,7 @@ extends Node3D
 @onready var mouse_pointer := $CanvasLayer/MousePointer
 @onready var pause_menu := $CanvasLayer/PauseMenu
 @onready var deathbox := $CanvasLayer/DeathBox
+@onready var audiostream := $AudioStreamPlayer
 
 const IN_VISION_THRESHOLD_ANGLE := 45
 const IN_VISION_THRESHOLD_ANGLE_CORNER_WATCHER := 45
@@ -94,6 +95,8 @@ const DEATHBOX_TWEEN_TIME := 1.0
 const insect = preload("res://scenes/Insect.tscn")
 const bloodball = preload("res://scenes/Bloodball.tscn")
 # const bloodsplatter = preload("res://scenes/Bloodsplat.tscn")
+
+const rainambience = preload("res://assets/sounds/lightRain.wav")
 
 # Tween for damage vignette
 var vignette_tween: Tween
@@ -125,6 +128,9 @@ func _ready():
 	# Make mice have a random starting direction
 	for mouse in mice.get_children():
 		mouse.init(player, Vector3(randf_range(-1.0,1.0), 0, randf_range(-1.0,1.0)))
+	# Start rain noise
+	audiostream.stream = rainambience
+	audiostream.play()
 
 func _physics_process(_delta):
 	
@@ -312,16 +318,28 @@ func _open_retry_menu() -> void:
 	# Show menu in retry mode
 	pause_menu.show_menu(true)
 
+# Called when player grabs a mouse
 func _on_player_slurped_mouse():
+	print("Here")
 	veins.get_child(2).visible = false
 	veins.get_child(3).visible = false
 	veins.get_child(4).visible = false
 	veins.get_child(7).visible = false
 	veins.get_child(8).visible = false
+	player.playGrabbingSound()
 	rightHandIdle.visible = false
 	handGrab.visible = true
 	grabbingTimer.start()
 
+# Played after a player grabs a mouse, starts eating mouse
+func _on_grabbing_timer_timeout():
+	grabbingTimer.stop()
+	handGrab.visible = false
+	handEat.visible = true
+	player.playEatingSounds()
+	eatingTimer.start()
+
+# Go back to normal after eating mouse
 func _on_eating_timer_timeout():
 	eatingTimer.stop()
 	handEat.visible = false
@@ -331,13 +349,8 @@ func _on_eating_timer_timeout():
 	veins.get_child(4).visible = true
 	veins.get_child(7).visible = true
 	veins.get_child(8).visible = true
+	player.playSwallowSound()
 	player.slurpingMouse = false
-
-func _on_grabbing_timer_timeout():
-	grabbingTimer.stop()
-	handGrab.visible = false
-	handEat.visible = true
-	eatingTimer.start()
 
 func _on_pause_menu_resume_game():
 	player._close_menu()

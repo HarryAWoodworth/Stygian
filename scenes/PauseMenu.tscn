@@ -50,6 +50,8 @@ offset_right = 1156.0
 offset_bottom = 5969.0
 texture_normal = ExtResource( "6_3uk54" )
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
 [connection signal="mouse_entered" from="RestartButton" to="." method="_on_restart_button_mouse_entered"]
 [connection signal="mouse_exited" from="RestartButton" to="." method="_on_restart_button_mouse_exited"]
 [connection signal="pressed" from="RestartButton" to="." method="_on_restart_button_pressed"]

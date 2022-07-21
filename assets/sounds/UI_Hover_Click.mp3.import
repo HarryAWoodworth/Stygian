@@ -12,5 +12,5 @@ dest_files=["res://.godot/imported/UI_Hover_Click.mp3-45c3d377f471316672f782fcde
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

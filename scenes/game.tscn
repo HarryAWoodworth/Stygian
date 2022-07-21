@@ -492,7 +492,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.08385, 0.14847, 0)
 wait_time = 2.0
 
 [node name="EatingTimer" type="Timer" parent="."]
-wait_time = 0.5
 
 [node name="GrabbingTimer" type="Timer" parent="."]
 wait_time = 0.2
@@ -503,6 +502,8 @@ visibility_aabb = AABB(-10.4345, -10.2893, -6.10481, 20.869, 20.5787, 12.2096)
 splash_area = 25.0
 splashes_per_second = 600
 how_far_splash_into_ground = 0.0
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [connection signal="bloodball_charged" from="CanvasLayer/Bloodball" to="." method="_on_bloodball_bloodball_charged"]
 [connection signal="timeout" from="CanvasLayer/Bloodball/Timer" to="CanvasLayer/Bloodball" method="_on_timer_timeout"]

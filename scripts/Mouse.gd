@@ -2,14 +2,36 @@ extends CharacterBody3D
 
 @onready var floorCast := $RayCast3D
 @onready var sprite := $Sprite3D
+@onready var audiostream := $AudioStreamPlayer3D
+@onready var squeaktimer := $SqueakTimer
+@onready var area := $Area3D/CollisionShape3D
 
 const SPEED := 3.0
+const MIN_SQUEAK_TIME := 4
+const MAX_SQUEAK_TIME := 8
 
+var squeak1 = preload("res://assets/sounds/MouseSqueak1.mp3")
+var squeak2 = preload("res://assets/sounds/MouseSqueak2.mp3")
+var squeak3 = preload("res://assets/sounds/MouseSqueak3.mp3")
+var squeak4 = preload("res://assets/sounds/MouseSqueak4.mp3")
+var squeak5 = preload("res://assets/sounds/MouseSqueak5.mp3")
+var squeak6 = preload("res://assets/sounds/MouseSqueak6.mp3")
+var squeak7 = preload("res://assets/sounds/MouseSqueak7.mp3")
+var squeak8 = preload("res://assets/sounds/MouseSqueak8.mp3")
+
+var shriek1 = preload("res://assets/sounds/MouseDeath1.mp3")
+#var shriek2 = preload("res://assets/sounds/MouseDeath2.mp3")
+var shriek3 = preload("res://assets/sounds/MouseDeath3.mp3")
+var shriek4 = preload("res://assets/sounds/MouseDeath4.mp3")
+
+var squeaks = [squeak1,squeak2,squeak3,squeak4,squeak5,squeak6,squeak7,squeak8]
+var shrieks = [shriek1,shriek3,shriek4]
 
 var direction := Vector3.ZERO
 var inPlayerVision := false
 var eye_height_increase := Vector3.ZERO
 var player: Node
+var dead := false
 
 # Get the gravity from the project settings to be synced with RigidDynamicBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
@@ -17,6 +39,7 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 func init(player_: Node, direction_: Vector3) -> void:
 	player = player_
 	direction = direction_
+	squeaktimer.start(MIN_SQUEAK_TIME)
 
 func _physics_process(delta):
 	
@@ -61,4 +84,26 @@ func setInPlayerVision(inVision: bool) -> void:
 	inPlayerVision = inVision
 
 func getSlurped() -> void:
+	dead = true
+	area.disabled = true
+	sprite.visible = false
+	set_physics_process(false)
+	audiostream.stop()
+	var index = randi() % shrieks.size()
+	print(index)
+	audiostream.stream = shrieks[index]
+	audiostream.play()
+
+# Make random squeak noise
+func _squeak() -> void:
+	if dead: return
+	audiostream.stream = squeaks[randi() % squeaks.size()]
+	audiostream.play()
+
+func _on_squeak_timer_timeout():
+	_squeak()
+	squeaktimer.start((randi() % MAX_SQUEAK_TIME)+ MIN_SQUEAK_TIME)
+
+func _on_audio_stream_player_3d_finished():
+	if !dead: return
 	queue_free()

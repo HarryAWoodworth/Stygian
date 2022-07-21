@@ -12,5 +12,5 @@ dest_files=["res://.godot/imported/BloodBallSplat.mp3-df39222988debc1eaf543df44e
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

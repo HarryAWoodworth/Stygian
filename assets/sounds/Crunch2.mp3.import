@@ -12,5 +12,5 @@ dest_files=["res://.godot/imported/Crunch2.mp3-1c0675c230bcb455e9f39aebedd4919b.
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

@@ -12,5 +12,5 @@ dest_files=["res://.godot/imported/MouseSqueak1.mp3-6a0eaebb0baf9ed27d90a974eda0
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

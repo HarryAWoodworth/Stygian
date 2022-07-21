@@ -12,5 +12,5 @@ dest_files=["res://.godot/imported/Chew2.mp3-8e96309ef80e3cf408bffbad32289726.mp
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

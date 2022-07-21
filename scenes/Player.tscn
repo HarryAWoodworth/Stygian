@@ -56,6 +56,10 @@ transform = Transform3D(-1, 0, -8.74227e-08, 0, 1, 0, 8.74227e-08, 0, -1, 0, 0.6
 transform = Transform3D(1, 0, -2.23517e-08, 0, 1, 0, 1.86265e-08, 0, 1, 0, 0, 0)
 current = true
 
+[node name="AudioListener3D" type="AudioListener3D" parent="Neck/Camera3D"]
+transform = Transform3D(1, 0, 1.86265e-08, 0, 1, 0, -1.86265e-08, 0, 1, 0, 0, 0)
+current = true
+
 [node name="CameraRayCast" type="RayCast3D" parent="Neck/Camera3D"]
 transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, -0.002)
 target_position = Vector3(0, 0, 5)
@@ -71,6 +75,9 @@ spot_angle = 37.5006
 transform = Transform3D(1, 0, -1.86265e-08, 0, 1, 0, 1.86265e-08, 0, 1, 0, -0.178859, -0.484)
 
 [node name="UncrouchRaycasts" type="Node" parent="Neck"]
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="Neck"]
+transform = Transform3D(-1, 0, 8.74227e-08, 0, 1, 0, -8.74227e-08, 0, -1, 2.3829e-07, 0, -2.72572)
 
 [node name="DebugCamera" type="Camera3D" parent="."]
 transform = Transform3D(-0.710494, 0.275688, -0.647453, -0.100792, 0.87071, 0.481357, 0.696448, 0.407259, -0.590847, -2.08113, 1.80824, -1.87534)

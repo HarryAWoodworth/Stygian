@@ -28,6 +28,32 @@ signal slurped_mouse
 @onready var standCast3 := $RayCast3D3
 @onready var standCast4 := $RayCast3D4
 @onready var unstuckRay := $Unstuck
+@onready var audiostream := $Neck/AudioStreamPlayer3D
+
+# Sound Assets
+var grabMouse = preload("res://assets/sounds/GrabMouse.mp3")
+var slurpMouse = preload("res://assets/sounds/SlurpMouse.mp3")
+
+var chew1 = preload("res://assets/sounds/Chew1.mp3")
+var chew2 = preload("res://assets/sounds/Chew2.mp3")
+var chew3 = preload("res://assets/sounds/Chew3.mp3")
+var chew4 = preload("res://assets/sounds/Chew4.mp3")
+var chew5 = preload("res://assets/sounds/Chew5.mp3")
+var chew6 = preload("res://assets/sounds/Chew6.mp3")
+var chew7 = preload("res://assets/sounds/Chew7.mp3")
+var chew8 = preload("res://assets/sounds/Chew8.mp3")
+
+var crunch1 = preload("res://assets/sounds/Crunch1.mp3")
+var crunch2 = preload("res://assets/sounds/Crunch2.mp3")
+var crunch3 = preload("res://assets/sounds/Crunch3.mp3")
+
+var swallow = preload("res://assets/sounds/Swallow.mp3")
+
+var chewSounds = [chew1,chew2,chew3,chew4,chew5,chew6,chew7,chew8]
+var crunchSounds = [crunch1,crunch2,crunch3]
+
+# Sound player scene
+var soundPlayer = preload("res://scenes/SoundPlayer.tscn")
 
 const SPEED = 5.0
 const JUMP_VELOCITY = 5.0
@@ -276,3 +302,24 @@ func _die() -> void:
 # Take damage from bugs
 func _on_bug_damage_timer_timeout():
 	bloodloss(DAMAGE_FROM_BUGS)
+
+func playGrabbingSound() -> void:
+	audiostream.stream = grabMouse
+	audiostream.play()
+
+func playEatingSounds() -> void:
+	var chewIndex = randi() % chewSounds.size()
+	print("Chew: ", chewIndex)
+	_play_sound(chewSounds[chewIndex])
+	var crunchIndex = randi() % crunchSounds.size()
+	print("Crunch: ", crunchIndex)
+	_play_sound(crunchSounds[crunchIndex])
+	_play_sound(slurpMouse)
+
+func playSwallowSound() -> void:
+	_play_sound(swallow)
+
+func _play_sound(sound_stream) -> void:
+	var sound = soundPlayer.instantiate()
+	camera.add_child(sound)
+	sound.play_sound(sound_stream)

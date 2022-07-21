@@ -12,5 +12,5 @@ dest_files=["res://.godot/imported/MouseDeath4.mp3-7a3b0c22ba0cb3dce0a393d46687c
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

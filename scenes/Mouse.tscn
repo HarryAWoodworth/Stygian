@@ -37,3 +37,11 @@ script = ExtResource( "3_j3d4x" )
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource( "SphereShape3D_ttvvo" )
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+
+[node name="SqueakTimer" type="Timer" parent="."]
+wait_time = 3.0
+
+[connection signal="finished" from="AudioStreamPlayer3D" to="." method="_on_audio_stream_player_3d_finished"]
+[connection signal="timeout" from="SqueakTimer" to="." method="_on_squeak_timer_timeout"]
